@@ -2,6 +2,7 @@ import click
 
 
 @click.group()
+@click.option('--version', '-v')
 def cli():
     pass
 
