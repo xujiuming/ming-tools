@@ -1,0 +1,29 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "1f80dedaa624901ee27f7d1ffcc92d988d8e643a0e2c262fb1f75212dda9090a"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.7.5"
+        },
+        "sources": [
+            {
+                "name": "aliyun",
+                "url": "http://mirrors.aliyun.com/pypi/simple/",
+                "verify_ssl": false
+            }
+        ]
+    },
+    "default": {
+        "click": {
+            "hashes": [
+                "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
+                "sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"
+            ],
+            "index": "aliyun",
+            "version": "==7.0"
+        }
+    },
+    "develop": {}
+}
