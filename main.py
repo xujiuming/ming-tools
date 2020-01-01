@@ -1,4 +1,7 @@
 import click
+import psutil
+
+import local.Ming as m
 
 
 def print_version(ctx, param, value):
@@ -57,7 +60,7 @@ def local():
 
 @local.command('pc-config', help='电脑配置')
 def local_pc_config():
-    click.echo("local_pc_config")
+    click.echo(m.mem())
 
 
 # main 函数

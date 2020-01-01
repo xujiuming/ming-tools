@@ -4,8 +4,12 @@ verify_ssl = false
 name = "aliyun"
 
 [packages]
+# click 框架
 click = "*"
+# setuptools工具
 setuptools = "*"
+# 跨平台获取系统信息 工具
+psutil = "*"
 
 [dev-packages]
 
