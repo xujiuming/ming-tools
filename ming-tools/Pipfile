@@ -4,6 +4,8 @@ verify_ssl = false
 name = "aliyun"
 
 [packages]
+click = "*"
+setuptools = "*"
 
 [dev-packages]
 
