@@ -16,12 +16,14 @@ def print_version(ctx, param, value):
 
 
 @click.group()
-@click.option('--version', '-v', is_flag=True, callback=print_version, expose_value=False, is_eager=True)
+@click.option('--version', '-v', help='工具版本', is_flag=True, callback=print_version, expose_value=False, is_eager=True)
 def cli():
     pass
 
 
-@cli.group(help='管理服务器')
+# ---------------------- server tools ----------------------------------------------------------------------------------
+
+@cli.group(help='远程服务器管理')
 def server():
     pass
 
@@ -46,5 +48,18 @@ def server_edit():
     click.echo("server_edit")
 
 
+# ----------------------------------- local tools ----------------------------------------------------------------------
+
+@cli.group(help='本机使用的工具')
+def local():
+    pass
+
+
+@local.command('pc-config', help='电脑配置')
+def local_pc_config():
+    click.echo("local_pc_config")
+
+
+# main 函数
 if __name__ == '__main__':
     cli()
