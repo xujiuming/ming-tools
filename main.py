@@ -1,5 +1,5 @@
 import click
-from local import memory
+from local import pc_info
 
 
 def print_version(ctx, param, value):
@@ -56,9 +56,9 @@ def local():
     pass
 
 
-@local.command('pc-config', help='电脑配置')
-def local_pc_config():
-    click.echo(memory.mem())
+@local.command('pc-info', help='电脑配置')
+def local_pc_info():
+    pc_info.echo_pc_info()
 
 
 # main 函数
