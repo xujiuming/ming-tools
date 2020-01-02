@@ -61,6 +61,13 @@ def local_pc_info():
     pc_info.echo_pc_info()
 
 
+@local.command('http', help='根据指定文件夹开启临时http服务器')
+@click.option('--d', '-d', type=click.File('rwb'), default='.', nargs=1, help='指定静态文件目录,默认为.')
+@click.option('--t', '-t', default='http', type=click.Choice(['http', 'ftp', 'smb']), nargs=1, help='指定共享类型,默认为http')
+def local_tmp_http(d, t):
+    click.echo('http:::' + d + 'asdfas:::' + t)
+
+
 # main 函数
 if __name__ == '__main__':
     cli()

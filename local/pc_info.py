@@ -11,8 +11,6 @@ def echo_pc_info():
     输出 设备产品信息
     :return:
     """
-    virtual_mem = psutil.virtual_memory()
-    swap_mem = psutil.swap_memory()
     os_info = os.uname()
 
     memory_info_str = '''
@@ -34,7 +32,7 @@ cpu信息:
 {}
         '''.format(
         os_info.nodename,
-        linux_issue(),
+        subprocess.getoutput('cat /etc/issue').strip('\n'),
         os_info.release,
         os_info.machine,
         cpu_info().modelName,
@@ -46,16 +44,16 @@ cpu信息:
     click.echo(memory_info_str)
 
 
-def linux_issue():
-    return subprocess.getoutput('cat /etc/issue').strip('\t').strip('\n')
-
-
 def cpu_info():
+    """
+    从 /proc/cpuinfo 中读取cpu 模型名称
+    :return:
+    """
     f_cpu_info = open('/proc/cpuinfo', 'r')
     c = f_cpu_info.readlines()
     for i in c:
         tmp_str_list = i.split(':')
-        if re.match(".*model name.*", tmp_str_list[0]):
+        if re.match(".*model.*name.*", tmp_str_list[0]):
             return cpuInfo(tmp_str_list[1].strip('\n').strip('\t'))
 
 
