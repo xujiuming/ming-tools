@@ -1,7 +1,15 @@
+# coding:utf-8
+import socketserver
+from _socket import SOL_SOCKET, SO_REUSEADDR
+from functools import partial
+from http.server import HTTPServer, SimpleHTTPRequestHandler
+
 import click
-from local import pc_info
+
+from local import pc_info, http_server
 
 
+# -*- coding: utf-8 -*-
 def print_version(ctx, param, value):
     """
     输出工具版本
@@ -12,7 +20,11 @@ def print_version(ctx, param, value):
     """
     if not value or ctx.resilient_parsing:
         return
-    click.echo('mint-tools Version 1.0')
+
+    version_info = """
+    仅适用linux 其他平台部分功能异常 
+    ming-tools Version 1.0"""
+    click.echo(version_info)
     ctx.exit()
 
 
@@ -63,9 +75,10 @@ def local_pc_info():
 
 @local.command('http', help='根据指定文件夹开启临时http服务器')
 @click.option('--d', '-d', type=click.Path(exists=True), default='.', nargs=1, help='指定静态文件目录,默认为.')
-@click.option('--t', '-t', default='http', type=click.Choice(['http', 'ftp', 'smb']), nargs=1, help='指定共享类型,默认为http')
-def local_tmp_http(d, t):
-    click.echo('http:::' + d + 'asdfas:::' + t)
+@click.option('--port', '-p', default=80, type=int, nargs=1, help='指定服务端口,默认为80')
+@click.option('--host', '-h', default='0.0.0.0', type=str, nargs=1, help='指定服务监听地址,默认为0.0.0.0')
+def local_tmp_http(d, port, host):
+    http_server.http_server(d, port, host)
 
 
 # main 函数
