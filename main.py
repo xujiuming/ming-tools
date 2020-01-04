@@ -1,15 +1,9 @@
-# coding:utf-8
-import socketserver
-from _socket import SOL_SOCKET, SO_REUSEADDR
-from functools import partial
-from http.server import HTTPServer, SimpleHTTPRequestHandler
-
 import click
 
 from local import pc_info, http_server
+from server import server_config
 
 
-# -*- coding: utf-8 -*-
 def print_version(ctx, param, value):
     """
     输出工具版本
@@ -43,22 +37,33 @@ def server():
 
 @server.command("list", help='显示所有服务器配置')
 def server_list():
-    click.echo('server_list')
+    server_config.server_list()
 
 
 @server.command("add", help='添加服务器配置')
-def server_add():
-    click.echo("server_add")
+@click.option('--name', '-n', prompt='请输入服务器名称')
+@click.option('--host', '-h', prompt='请输入服务器地址')
+@click.option('--port', '-p', prompt='请输入服务器ssh端口,默认为22', default=22)
+@click.option('--password', '-pwd', prompt='请输入密码')
+def server_add(name, host, port, password):
+    server_config.server_add(name, host, port, password)
 
 
-@server.command("remove", help='删除服务器配置')
-def server_remove():
-    click.echo("server_remove")
+@server.command("remove", help='根据名称删除服务器配置')
+@click.option('--name', '-n', type=str, prompt='请输入服务器名称', help='服务器名称')
+def server_remove(name):
+    server_config.server_remove(name)
 
 
 @server.command('edit', help='编辑服务器配置')
 def server_edit():
     click.echo("server_edit")
+
+
+@server.command('connect', help='🔗连接服务器')
+@click.option('--name', '-n', type=str, prompt='请输入服务器名称', help='服务器名称')
+def server_connect(name):
+    server_config.connect()
 
 
 # ----------------------------------- local tools ----------------------------------------------------------------------
