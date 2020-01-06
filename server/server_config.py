@@ -10,7 +10,7 @@ import click
 import paramiko
 import yaml
 
-default_config_dir = '/etc/ming-tools'
+default_config_dir = '{}/.ming-tools'.format(os.path.expanduser('~'))
 if not os.path.exists(default_config_dir):
     os.makedirs(default_config_dir)
 
@@ -18,7 +18,7 @@ if not os.path.exists(default_config_dir):
 default_config_file = default_config_dir + '/server_config.yaml'
 
 
-def server_add(name, host, port, password):
+def server_add(name, host, port, username, password):
     """
     添加服务配置
     :param name: 服务器名称
@@ -29,7 +29,7 @@ def server_add(name, host, port, password):
     """
     # 追加模式
     y_file = open(default_config_file, 'a+')
-    sc = ServerConfig(name, host, port, password)
+    sc = ServerConfig(name, host, port, username, password)
     yaml.safe_dump([sc.__dict__], y_file)
     click.echo('\n录入的服务器信息:\n名称:{}\n地址:{}\nssh端口:{}\n密码:{}'.format(name, host, port, password))
 
@@ -73,17 +73,27 @@ def server_list():
     click.echo(config_str)
 
 
-def connect():
+def server_connect(name):
+    click.echo("连接{}服务器...".format(name))
+    config_list = yaml.safe_load(open(default_config_file, 'r'))
+    if config_list is None:
+        click.echo("暂无{}服务器配置信息!".format(name))
+        return
+    for c in config_list:
+        if c['name'] == name:
+            open_ssh_tty(c['host'], c['port'], c['username'], c['password'])
+            break
+
+
+def open_ssh_tty(host, port, username, password):
     # https://www.cnblogs.com/langqi250/p/10141295.html
     # 建立一个socket
-    trans = paramiko.Transport(('127.0.0.1', 22))
+    trans = paramiko.Transport((host, port))
     # 启动一个客户端
     trans.start_client()
 
-    # 如果使用rsa密钥登录的话
-
     # 如果使用用户名和密码登录
-    trans.auth_password(username='ming', password='ming')
+    trans.auth_password(username=username, password=password)
     # 打开一个通道
     channel = trans.open_session()
     # 获取终端
@@ -113,11 +123,13 @@ def connect():
                 result = channel.recv(1024)
                 # 断开连接后退出
                 if len(result) == 0:
-                    print("\r\n**** EOF **** \r\n")
+                    print("\r\n退出{}服务器 \r\n".format(host))
                     break
                 # 输出到屏幕
                 sys.stdout.write(result.decode())
                 sys.stdout.flush()
+    except RuntimeError as err:
+        raise click.echo("连接远程服务器异常.....{}".format(err))
     finally:
         # 执行完后将现在的终端属性恢复为原操作终端属性
         termios.tcsetattr(sys.stdin, termios.TCSADRAIN, oldtty)
@@ -129,10 +141,11 @@ def connect():
 
 
 class ServerConfig(object):
-    def __init__(self, name, host, port, password):
+    def __init__(self, name, host, port, username, password):
         self.name = name
         self.host = host
         self.port = port
+        self.username = username
         self.password = password
 
     """
@@ -144,6 +157,8 @@ class ServerConfig(object):
     host: str
     # ssh端口
     port: int
+    # 服务器用户名
+    username: str
     # 密码
     password: str
     # 密钥位置

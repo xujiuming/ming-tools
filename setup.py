@@ -6,7 +6,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'Click', 'psutil', 'prettytable', 'PyYAML', 'paramiko'
+        'Click', 'psutil', 'PyYAML', 'paramiko'
     ],
     entry_points='''
         [console_scripts]

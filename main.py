@@ -1,7 +1,22 @@
+# -*- coding:utf-8 -*-
+import re
+
 import click
 
 from local import pc_info, http_server
 from server import server_config
+
+
+def validate_ip_type(ctx, param, value):
+    compile_ip = re.compile('^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$')
+    err_msg = '{}不符合ip格式!请检查后输入'.format(value)
+    try:
+        if compile_ip.match(value):
+            return value
+        else:
+            raise click.BadParameter(err_msg)
+    except ValueError:
+        raise click.BadParameter(err_msg)
 
 
 def print_version(ctx, param, value):
@@ -42,11 +57,12 @@ def server_list():
 
 @server.command("add", help='添加服务器配置')
 @click.option('--name', '-n', prompt='请输入服务器名称')
-@click.option('--host', '-h', prompt='请输入服务器地址')
+@click.option('--host', '-h', prompt='请输入服务器地址', callback=validate_ip_type)
 @click.option('--port', '-p', prompt='请输入服务器ssh端口,默认为22', default=22)
+@click.option('--username', '-u', prompt='请输入服务器用户名')
 @click.option('--password', '-pwd', prompt='请输入密码')
-def server_add(name, host, port, password):
-    server_config.server_add(name, host, port, password)
+def server_add(name, host, port, username, password):
+    server_config.server_add(name, host, port, username, password)
 
 
 @server.command("remove", help='根据名称删除服务器配置')
@@ -57,13 +73,13 @@ def server_remove(name):
 
 @server.command('edit', help='编辑服务器配置')
 def server_edit():
-    click.echo("server_edit")
+    click.echo("暂不支持编辑 请直接编辑配置文件~/.ming-tools/server_config.yaml")
 
 
 @server.command('connect', help='🔗连接服务器')
 @click.option('--name', '-n', type=str, prompt='请输入服务器名称', help='服务器名称')
 def server_connect(name):
-    server_config.connect()
+    server_config.server_connect(name)
 
 
 # ----------------------------------- local tools ----------------------------------------------------------------------
@@ -81,7 +97,8 @@ def local_pc_info():
 @local.command('http', help='根据指定文件夹开启临时http服务器')
 @click.option('--d', '-d', type=click.Path(exists=True), default='.', nargs=1, help='指定静态文件目录,默认为.')
 @click.option('--port', '-p', default=80, type=int, nargs=1, help='指定服务端口,默认为80')
-@click.option('--host', '-h', default='0.0.0.0', type=str, nargs=1, help='指定服务监听地址,默认为0.0.0.0')
+@click.option('--host', '-h', default='0.0.0.0', callback=validate_ip_type, type=str, nargs=1,
+              help='指定服务监听地址,默认为0.0.0.0')
 def local_tmp_http(d, port, host):
     http_server.http_server(d, port, host)
 
