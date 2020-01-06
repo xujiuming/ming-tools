@@ -76,6 +76,12 @@ def server_edit():
     click.echo("暂不支持编辑 请直接编辑配置文件~/.ming-tools/server_config.yaml")
 
 
+@server.command('sync-config', help='同步配置')
+@click.option('--model', '-m')
+def server_sync_config():
+    click.echo("同步server配置")
+
+
 @server.command('connect', help='🔗连接服务器')
 @click.option('--name', '-n', type=str, prompt='请输入服务器名称', help='服务器名称')
 def server_connect(name):

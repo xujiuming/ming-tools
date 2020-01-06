@@ -68,8 +68,8 @@ def server_list():
         click.echo("暂无服务器配置信息!")
         return
     config_str = '服务器配置信息:\n'
-    for c in config_list:
-        config_str += '名称:{},地址:{},端口{}'.format(c['name'], c['host'], str(c['port']) + '\n')
+    for index, c in enumerate(config_list):
+        config_str += '第{}台服务器名称:{},地址:{},端口:{}'.format(index + 1, c['name'], c['host'], str(c['port']) + '\n')
     click.echo(config_str)
 
 
