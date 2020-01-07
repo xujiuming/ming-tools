@@ -1,6 +1,7 @@
 # 默认配置路径
 import copy
 import os
+import pathlib
 import select
 import sys
 import termios
@@ -10,6 +11,7 @@ import click
 import paramiko
 import yaml
 
+# 配置目录存放在 用户根目录
 default_config_dir = '{}/.ming-tools'.format(os.path.expanduser('~'))
 if not os.path.exists(default_config_dir):
     os.makedirs(default_config_dir)
@@ -24,12 +26,13 @@ def server_add(name, host, port, username, password):
     :param name: 服务器名称
     :param host: 服务器地址
     :param port: 服务器ssh端口
-    :param password: 密码
+    :param username: 服务器用户名
+    :param password: 服务器用户密码
     :return:
     """
     # 追加模式
     y_file = open(default_config_file, 'a+')
-    sc = ServerConfig(name, host, port, username, password)
+    sc = ServerConfig(name=name, host=host, port=port, username=username, password=password)
     yaml.safe_dump([sc.__dict__], y_file)
     click.echo('\n录入的服务器信息:\n名称:{}\n地址:{}\nssh端口:{}\n密码:{}'.format(name, host, port, password))
 
@@ -49,9 +52,10 @@ def server_remove(name):
     # 深拷贝 配置列表 进行操作列表
     new_config_list = copy.deepcopy(config_list)
     for c in config_list:
-        if c['name'] == name:
+        sc = ServerConfig.to_obj(c)
+        if sc.name == name:
             new_config_list.remove(c)
-            click.echo("删除{}服务器".format(c['name']))
+            click.echo("删除{}服务器".format(sc.name))
     # 重新打开链接
     if len(new_config_list) != 0:
         yaml.safe_dump(new_config_list, open(default_config_file, 'w+'))
@@ -62,6 +66,13 @@ def server_remove(name):
 
 
 def server_list():
+    config_file = pathlib.Path(default_config_file)
+    if not config_file.exists():
+        click.echo("暂无服务器配置信息！")
+        return
+    if not config_file.is_file():
+        click.echo("{}不是配置文件".format(default_config_file))
+        return
     y_read_file = open(default_config_file, 'r')
     config_list = yaml.safe_load(y_read_file)
     if config_list is None:
@@ -69,7 +80,8 @@ def server_list():
         return
     config_str = '服务器配置信息:\n'
     for index, c in enumerate(config_list):
-        config_str += '第{}台服务器名称:{},地址:{},端口:{}'.format(index + 1, c['name'], c['host'], str(c['port']) + '\n')
+        sc = ServerConfig.to_obj(c)
+        config_str += '第{}台服务器名称:{},地址:{},端口:{}'.format(index + 1, sc.name, sc.host, str(sc.port) + '\n')
     click.echo(config_str)
 
 
@@ -80,8 +92,9 @@ def server_connect(name):
         click.echo("暂无{}服务器配置信息!".format(name))
         return
     for c in config_list:
-        if c['name'] == name:
-            open_ssh_tty(c['host'], c['port'], c['username'], c['password'])
+        sc = ServerConfig.to_obj(c)
+        if sc.name == name:
+            open_ssh_tty(sc.host, sc.port, sc.username, sc.password)
             break
 
 
@@ -123,7 +136,7 @@ def open_ssh_tty(host, port, username, password):
                 result = channel.recv(1024)
                 # 断开连接后退出
                 if len(result) == 0:
-                    print("\r\n退出{}服务器 \r\n".format(host))
+                    print("\r\n退出{}用户,ip:{}服务器 \r\n".format(username, host))
                     break
                 # 输出到屏幕
                 sys.stdout.write(result.decode())
@@ -141,13 +154,6 @@ def open_ssh_tty(host, port, username, password):
 
 
 class ServerConfig(object):
-    def __init__(self, name, host, port, username, password):
-        self.name = name
-        self.host = host
-        self.port = port
-        self.username = username
-        self.password = password
-
     """
     服务器配置模板class
     """
@@ -163,3 +169,20 @@ class ServerConfig(object):
     password: str
     # 密钥位置
     secretKeyPath: str
+
+    def __init__(self, name, host, port, username, password):
+        self.name = name
+        self.host = host
+        self.port = port
+        self.username = username
+        self.password = password
+
+    @staticmethod
+    def to_obj(d: dict):
+        """
+        将读取的dict 转换为 serverConfig
+        :param d:  dict
+        :return: ServerConfig
+        """
+        return ServerConfig(name=d['name'], host=d['host'], port=d['port'], username=d['username'],
+                            password=d['password'])
