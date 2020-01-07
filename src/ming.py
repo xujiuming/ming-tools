@@ -3,7 +3,8 @@ import re
 
 import click
 
-from local import pc_info, http_server
+from local import pc_info
+from local import http_server
 from server import server_config
 
 

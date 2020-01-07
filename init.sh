@@ -15,4 +15,8 @@ pipenv shell
 python setup.py sdist
 python setup.py bdist_wheel
 #上传到 pipy python3 twt
+pip3 install twine
 twine upload dist/*
+
+# 临时安装本地目录
+pip install --editable .

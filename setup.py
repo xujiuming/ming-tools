@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='ming',
+    name='jiuming-tools',
     # 版本 如果需要发布更新 需要调整版本号
-    version='1.0',
-    packages=find_packages(),
+    version='1.8',
+    packages=find_packages('src'),
     include_package_data=True,
     # 需要的依赖
     install_requires=[

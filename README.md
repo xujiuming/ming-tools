@@ -5,3 +5,13 @@
 * 建议http共享目录
 * 获取设备基本信息 
 * 快速初始化本地常用sdk  
+
+
+```shell script
+# ubuntu 使用python3 版本的pip 名字默认为pip3 
+#安装
+pip3 install jiuming-tools
+#更新
+pip3 install --upgrade jiuming-tools
+
+```
