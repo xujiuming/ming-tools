@@ -19,4 +19,6 @@ setup(
     ''',
     author='ming',
     license='MIT',
+    url='https://github.com/xujiuming/jiuming-tools',
+    description='个人常用功能'
 )
