@@ -3,8 +3,8 @@ import re
 
 import click
 
-from local import pc_info
 from local import http_server
+from local import pc_info
 from ming import config
 from server import server_config
 
@@ -73,9 +73,9 @@ def server_remove(name):
     server_config.server_remove(name)
 
 
-@server.command('edit', help='编辑服务器配置')
+@server.command('edit', help='使用vi编辑服务器配置')
 def server_edit():
-    click.echo("暂不支持编辑 请直接编辑配置文件~/.ming-tools/server_config.yaml")
+    server_config.server_edit()
 
 
 @server.command('sync-config', help='同步配置')

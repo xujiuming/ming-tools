@@ -3,6 +3,7 @@ import copy
 import os
 import pathlib
 import select
+import subprocess
 import sys
 import termios
 import tty
@@ -35,6 +36,10 @@ def server_add(name, host, port, username, password):
     sc = ServerConfig(name=name, host=host, port=port, username=username, password=password)
     yaml.safe_dump([sc.__dict__], y_file)
     click.echo('\n录入的服务器信息:\n名称:{}\n地址:{}\nssh端口:{}\n密码:{}'.format(name, host, port, password))
+
+
+def server_edit():
+    os.system('vi {}'.format(default_config_file))
 
 
 def server_remove(name):
