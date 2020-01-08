@@ -5,6 +5,7 @@ import click
 
 from local import pc_info
 from local import http_server
+from ming import config
 from server import server_config
 
 
@@ -33,7 +34,7 @@ def print_version(ctx, param, value):
 
     version_info = """
     仅适用linux 其他平台部分功能异常 
-    ming-tools Version 1.0"""
+    ming-tools Version {}""".format(config.version)
     click.echo(version_info)
     ctx.exit()
 
