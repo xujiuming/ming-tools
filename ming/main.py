@@ -110,6 +110,6 @@ def local_tmp_http(d, port, host):
     http_server.http_server(d, port, host)
 
 
-# main 函数
+# ming 函数
 if __name__ == '__main__':
     cli()
