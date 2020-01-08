@@ -39,6 +39,10 @@ def print_version(ctx, param, value):
     ctx.exit()
 
 
+def update_version(ctx, param, value):
+    click.echo("更新jiuming-tools。。。")
+
+
 @click.group()
 @click.option('--version', '-v', help='工具版本', is_flag=True, callback=print_version, expose_value=False, is_eager=True)
 def cli():
@@ -46,7 +50,6 @@ def cli():
 
 
 # ---------------------- server tools ----------------------------------------------------------------------------------
-
 @cli.group(help='远程服务器管理')
 def server():
     pass
