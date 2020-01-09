@@ -3,8 +3,8 @@ import re
 
 import click
 
+from src.config import global_config
 from src.local import http_server, pc_info
-from src.ming import config
 from src.server import server_config
 
 
@@ -33,7 +33,7 @@ def print_version(ctx, param, value):
 
     version_info = """
     仅适用linux 其他平台部分功能异常 
-    jiuming-tools Version {}""".format(config.version)
+    jiuming-tools Version {}""".format(global_config.version)
     click.echo(version_info)
     ctx.exit()
 
@@ -111,6 +111,35 @@ def local_pc_info():
               help='指定服务监听地址,默认为0.0.0.0')
 def local_tmp_http(d, port, host):
     http_server.http_server(d, port, host)
+
+
+# ----------------------------------- tools config manager  ----------------------------------------------------------------------
+
+config_remark = """
+配置管理 \n
+使用私有git仓库作为配置保存\n  
+如github 私有仓库等 \n
+"""
+
+
+@cli.group(help=config_remark)
+def config():
+    pass
+
+
+@config.command('config', help='同步相关配置')
+def config_config():
+    click.echo("配置同步相关参数配置")
+
+
+@config.command('pull', help='同步配置')
+def config_pull():
+    click.echo("拉取同步jiuming-tools 所有配置")
+
+
+@config.command('push', help='同步配置')
+def config_push():
+    click.echo("push同步jiuming-tools 所有配置")
 
 
 # ming 函数
