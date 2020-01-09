@@ -3,10 +3,9 @@ import re
 
 import click
 
-from local import http_server
-from local import pc_info
-from ming import config
-from server import server_config
+from src.local import http_server, pc_info
+from src.ming import config
+from src.server import server_config
 
 
 def validate_ip_type(ctx, param, value):
