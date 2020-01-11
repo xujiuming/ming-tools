@@ -113,7 +113,7 @@ def local_tmp_http(d, port, host):
     http_server.http_server(d, port, host)
 
 
-# ----------------------------------- tools config manager  ----------------------------------------------------------------------
+# ----------------------------------- tools config manager  -----------------------------------------------------------
 
 config_remark = """
 配置管理 \n
@@ -140,6 +140,22 @@ def config_pull():
 @config.command('push', help='同步配置')
 def config_push():
     click.echo("push同步jiuming-tools 所有配置")
+
+
+# ---------------------------------------------- net tools  -----------------------------------------------------------
+@cli.group(help='网络相关工具')
+def net():
+    pass
+
+
+@net.command('trace')
+def net_trace():
+    click.echo("跟踪网络")
+
+
+@net.command('open-socket')
+def net_open_socket():
+    click.echo("打开指定端口socket")
 
 
 # ming 函数
