@@ -50,3 +50,4 @@ def bubble_sort(l: list):
 
 if __name__ == '__main__':
     print(bubble_sort(int_l))
+    print("--------------------------------------------")
