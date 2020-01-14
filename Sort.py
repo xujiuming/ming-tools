@@ -105,6 +105,16 @@ def selection_sort_n_1(l: list):
     return t_l
 
 
+@count_time("插入排序")
+def insert_sort(l:list):
+    """
+    插入排序
+
+         百度百科:https://baike.baidu.com/item/%E6%8F%92%E5%85%A5%E6%8E%92%E5%BA%8F/7214992?fr=aladdin
+    :param l:
+    :return:
+    """
+
 if __name__ == '__main__':
     """
     调用各种排序  使用装饰器来打印耗时和结果
