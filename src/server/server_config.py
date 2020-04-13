@@ -3,7 +3,6 @@ import copy
 import os
 import pathlib
 import select
-import subprocess
 import sys
 import termios
 import tty
@@ -12,13 +11,10 @@ import click
 import paramiko
 import yaml
 
-# 配置目录存放在 用户根目录
-default_config_dir = '{}/.ming-tools'.format(os.path.expanduser('~'))
-if not os.path.exists(default_config_dir):
-    os.makedirs(default_config_dir)
+from src.config.global_config import default_config_dir
 
 # 默认配置file
-default_config_file = default_config_dir + '/server_config.yaml'
+server_config_default_file = default_config_dir + '/server_config.yaml'
 
 
 def server_add(name, host, port, username, password):
@@ -32,14 +28,14 @@ def server_add(name, host, port, username, password):
     :return:
     """
     # 追加模式
-    y_file = open(default_config_file, 'a+')
+    y_file = open(server_config_default_file, 'a+')
     sc = ServerConfig(name=name, host=host, port=port, username=username, password=password)
     yaml.safe_dump([sc.__dict__], y_file)
     click.echo('\n录入的服务器信息:\n名称:{}\n地址:{}\nssh端口:{}\n密码:{}'.format(name, host, port, password))
 
 
 def server_edit():
-    os.system('vi {}'.format(default_config_file))
+    os.system('vi {}'.format(server_config_default_file))
 
 
 def server_remove(name):
@@ -49,7 +45,7 @@ def server_remove(name):
     :param name: 服务器名称
     :return:
     """
-    y_read_file = open(default_config_file, 'r')
+    y_read_file = open(server_config_default_file, 'r')
     config_list = yaml.safe_load(y_read_file)
     if config_list is None:
         click.echo("暂无服务器配置信息!")
@@ -63,22 +59,22 @@ def server_remove(name):
             click.echo("删除{}服务器".format(sc.name))
     # 重新打开链接
     if len(new_config_list) != 0:
-        yaml.safe_dump(new_config_list, open(default_config_file, 'w+'))
+        yaml.safe_dump(new_config_list, open(server_config_default_file, 'w+'))
     else:
         # 清空配置
-        open(default_config_file, 'w+').truncate()
+        open(server_config_default_file, 'w+').truncate()
         click.echo("服务器配置已清空!")
 
 
 def server_list():
-    config_file = pathlib.Path(default_config_file)
+    config_file = pathlib.Path(server_config_default_file)
     if not config_file.exists():
         click.echo("暂无服务器配置信息！")
         return
     if not config_file.is_file():
-        click.echo("{}不是配置文件".format(default_config_file))
+        click.echo("{}不是配置文件".format(server_config_default_file))
         return
-    y_read_file = open(default_config_file, 'r')
+    y_read_file = open(server_config_default_file, 'r')
     config_list = yaml.safe_load(y_read_file)
     if config_list is None:
         click.echo("暂无服务器配置信息!")
@@ -92,7 +88,7 @@ def server_list():
 
 def server_connect(name):
     click.echo("连接{}服务器...".format(name))
-    config_list = yaml.safe_load(open(default_config_file, 'r'))
+    config_list = yaml.safe_load(open(server_config_default_file, 'r'))
     if config_list is None:
         click.echo("暂无{}服务器配置信息!".format(name))
         return
