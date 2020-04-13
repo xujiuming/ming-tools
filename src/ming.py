@@ -3,7 +3,7 @@ import re
 
 import click
 
-from src.config import global_config
+from src.config import global_config, config_manager
 from src.local import http_server, pc_info
 from src.server import server_config
 
@@ -36,7 +36,6 @@ def print_version(ctx, param, value):
     jiuming-tools Version {}""".format(global_config.version)
     click.echo(version_info)
     ctx.exit()
-
 
 
 @click.group()
@@ -124,21 +123,34 @@ def config():
     pass
 
 
-@config.command('config', help='同步相关配置')
-def config_config():
-    click.echo("配置同步相关参数配置")
+@config.command('details', help='查看当前配置仓库配置')
+def config_details():
+    config_manager.details()
 
 
+@config.command('create', help='创建当前配置仓库配置')
+def config_create():
+    config_manager.create()
 
 
-@config.command('pull', help='同步配置')
+@config.command('remove', help='删除当前配置仓库配置')
+def config_remove():
+    config_manager.remove()
+
+
+@config.command('edit', help='编辑当前配置仓库配置')
+def config_edit():
+    config_manager.edit()
+
+
+@config.command('pull', help='同步配置远程到本地')
 def config_pull():
-    click.echo("拉取同步jiuming-tools 所有配置")
+    config_manager.pull()
 
 
-@config.command('push', help='同步配置')
+@config.command('push', help='同步配置本地到远程仓库')
 def config_push():
-    click.echo("push同步jiuming-tools 所有配置")
+    config_manager.push()
 
 
 # ---------------------------------------------- net tools  -----------------------------------------------------------
