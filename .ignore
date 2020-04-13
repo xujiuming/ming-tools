@@ -1,5 +1,6 @@
 .idea
 # setup 临时目录
 ming.egg-info
+jiuming_tools.egg-info
 build
 dist
