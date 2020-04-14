@@ -10,7 +10,7 @@ setup(
     include_package_data=True,
     # 需要的依赖
     install_requires=[
-        'Click==7.0', 'psutil==5.6.7', 'PyYAML==5.2', 'paramiko==2.7.1'
+        'Click==7.0', 'psutil==5.6.7', 'PyYAML==5.2', 'paramiko==2.7.1,gitpython==3.1.1'
     ],
     # 命令行入口
     entry_points='''

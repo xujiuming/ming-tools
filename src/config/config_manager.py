@@ -2,12 +2,14 @@ import os
 
 import click
 import yaml
+from git import Repo
 
 from src.config.global_config import default_config_dir
 
 # 默认配置file
 sync_config_default_file = default_config_dir + '/sync_config.yaml'
-
+# 配置默认目录 建立git 仓库
+repo = Repo(default_config_dir)
 
 def details():
     checkSyncConfig()
