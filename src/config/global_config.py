@@ -1,8 +1,8 @@
-# 版本号  setup.py  ming.py 引用  每次发布 版本+1
 import os
 import re
 
-version = '1.22'
+# 版本号  setup.py  ming.py 引用  每次发布 版本+1
+version = '1.23'
 
 # 配置目录存放在 用户根目录
 default_config_dir = '{}/.ming-tools'.format(os.path.expanduser('~'))

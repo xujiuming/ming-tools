@@ -83,6 +83,7 @@ def server_list():
     for index, c in enumerate(config_list):
         sc = ServerConfig.to_obj(c)
         config_str += '第{}台服务器名称:{},地址:{},端口:{}'.format(index + 1, sc.name, sc.host, str(sc.port) + '\n')
+    config_str += "\n共{}台服务器\n".format(len(config_list))
     click.echo(config_str)
 
 
