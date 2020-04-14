@@ -1,7 +1,7 @@
 # 版本号  setup.py  ming.py 引用  每次发布 版本+1
 import os
 
-version = '1.20'
+version = '1.22'
 
 
 

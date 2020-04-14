@@ -5,6 +5,7 @@ import click
 
 from src.config import global_config, config_manager
 from src.local import http_server, pc_info
+from src.net import net_manager
 from src.server import server_config
 
 
@@ -155,14 +156,11 @@ def net():
     pass
 
 
-@net.command('trace')
-def net_trace():
-    click.echo("跟踪网络")
-
-
-@net.command('open-socket')
-def net_open_socket():
-    click.echo("打开指定端口socket")
+@net.command('test', help='测试服务器是否可以打开socket')
+@click.option('--host', '-h', type=str, prompt='请输入服务器地址', callback=validate_ip_or_host_name_type, help='服务器地址')
+@click.option('--port', '-p', type=int, default=80, help='探测端口号(默认为80)')
+def net_test(host, port):
+    net_manager.net_test(host, port)
 
 
 # ming 函数
