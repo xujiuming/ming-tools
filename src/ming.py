@@ -8,11 +8,14 @@ from src.local import http_server, pc_info
 from src.server import server_config
 
 
-def validate_ip_type(ctx, param, value):
+def validate_ip_or_host_name_type(ctx, param, value):
     compile_ip = re.compile('^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$')
-    err_msg = '{}不符合ip格式!请检查后输入'.format(value)
+    compile_host_mame = re.compile('^[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?$')
+    err_msg = '{}不符合ip/域名格式!请检查后输入'.format(value)
     try:
         if compile_ip.match(value):
+            return value
+        elif compile_host_mame.match(value):
             return value
         else:
             raise click.BadParameter(err_msg)
@@ -32,7 +35,8 @@ def print_version(ctx, param, value):
         return
 
     version_info = """
-    仅适用linux 其他平台部分功能异常 
+    作者:ming 
+    仅适用linux 其他平台兼容性不做保证
     jiuming-tools Version {}""".format(global_config.version)
     click.echo(version_info)
     ctx.exit()
@@ -57,7 +61,7 @@ def server_list():
 
 @server.command("add", help='添加服务器配置')
 @click.option('--name', '-n', prompt='请输入服务器名称')
-@click.option('--host', '-h', prompt='请输入服务器地址', callback=validate_ip_type)
+@click.option('--host', '-h', prompt='请输入服务器地址', callback=validate_ip_or_host_name_type)
 @click.option('--port', '-p', prompt='请输入服务器ssh端口,默认为22', default=22)
 @click.option('--username', '-u', prompt='请输入服务器用户名')
 @click.option('--password', '-pwd', prompt='请输入密码')
@@ -74,12 +78,6 @@ def server_remove(name):
 @server.command('edit', help='使用vi编辑服务器配置')
 def server_edit():
     server_config.server_edit()
-
-
-@server.command('sync-config', help='同步配置')
-@click.option('--model', '-m')
-def server_sync_config():
-    click.echo("同步server配置")
 
 
 @server.command('connect', help='🔗连接服务器')
@@ -103,7 +101,7 @@ def local_pc_info():
 @local.command('http', help='根据指定文件夹开启临时http服务器')
 @click.option('--d', '-d', type=click.Path(exists=True), default='.', nargs=1, help='指定静态文件目录,默认为.')
 @click.option('--port', '-p', default=80, type=int, nargs=1, help='指定服务端口,默认为80')
-@click.option('--host', '-h', default='0.0.0.0', callback=validate_ip_type, type=str, nargs=1,
+@click.option('--host', '-h', default='0.0.0.0', callback=validate_ip_or_host_name_type, type=str, nargs=1,
               help='指定服务监听地址,默认为0.0.0.0')
 def local_tmp_http(d, port, host):
     http_server.http_server(d, port, host)

@@ -1,4 +1,5 @@
 import os
+import time
 
 import click
 import yaml
@@ -9,7 +10,8 @@ from src.config.global_config import default_config_dir
 # 默认配置file
 sync_config_default_file = default_config_dir + '/sync_config.yaml'
 # 配置默认目录 建立git 仓库
-repo = Repo(default_config_dir)
+repo = Repo.init(default_config_dir)
+
 
 def details():
     checkSyncConfig()
@@ -34,6 +36,7 @@ def save(url, username, password):
     y_file = open(sync_config_default_file, 'w')
     sc = SyncConfig(url=url, username=username, password=password)
     yaml.safe_dump([sc.__dict__], y_file)
+    repo.create_remote("origin", url)
     click.echo('\n录入的同步仓库信息:\n地址:{},用户名:{},密码:{}'.format(url, username, password))
 
 
@@ -45,6 +48,7 @@ def remove():
     try:
         checkSyncConfig()
         os.unlink(sync_config_default_file)
+        repo.delete_remote("origin")
     except OSError:
         click.echo("删除同步仓库配置失败")
     else:
@@ -53,12 +57,19 @@ def remove():
 
 def pull():
     checkSyncConfig()
+    repo.remote().pull()
     click.echo("sync pull config")
 
 
 def push():
     checkSyncConfig()
-    click.echo("sync push config ")
+    git = repo.git
+    git.add('./*')
+    # 当工作区不是干净的 就进行 commit -》 push
+    commit_str = '\'{},同步jiuming-tools配置\''.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    git.commit('-m {}'.format(commit_str))
+    git.push()
+    click.echo("推送配置：{}".format(commit_str))
 
 
 def checkSyncConfig():
