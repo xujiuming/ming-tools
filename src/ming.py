@@ -1,17 +1,15 @@
 # -*- coding:utf-8 -*-
-import re
 
 import click
 
 from src.config import global_config, config_manager
+from src.config.global_config import compile_ip, compile_host_mame
 from src.local import http_server, pc_info
 from src.net import net_manager
 from src.server import server_config
 
 
 def validate_ip_or_host_name_type(ctx, param, value):
-    compile_ip = re.compile('^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$')
-    compile_host_mame = re.compile('^[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?$')
     err_msg = '{}不符合ip/域名格式!请检查后输入'.format(value)
     try:
         if compile_ip.match(value):
