@@ -57,6 +57,17 @@ def remove():
 
 def pull():
     checkSyncConfig()
+    git = repo.git
+    if git.has_separate_working_tree():
+        checkSyncConfig()
+        y_read_file = open(sync_config_default_file, 'r')
+        config = yaml.safe_load(y_read_file)
+        if config is None:
+            click.echo("暂无同步仓库配置信息!")
+            return
+        else:
+            sc = SyncConfig.to_obj(config[0])
+            repo.clone(path=sc.url)
     repo.remote().pull()
     click.echo("sync pull config")
 
