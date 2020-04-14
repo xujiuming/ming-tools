@@ -110,8 +110,9 @@ def open_ssh_tty(host, port, username, password):
     trans.auth_password(username=username, password=password)
     # 打开一个通道
     channel = trans.open_session()
-    # 获取终端
-    channel.get_pty()
+    # 获取终端  配置为当前终端宽高
+    terminal_size = os.get_terminal_size()
+    channel.get_pty(width=terminal_size.columns, height=terminal_size.lines)
     # 激活终端，这样就可以登录到终端了，就和我们用类似于xshell登录系统一样
     channel.invoke_shell()
 
@@ -121,7 +122,6 @@ def open_ssh_tty(host, port, username, password):
         # 将现在的操作终端属性设置为服务器上的原生终端属性,可以支持tab了
         tty.setraw(sys.stdin)
         channel.settimeout(0)
-
         while True:
             readlist, writelist, errlist = select.select([channel, sys.stdin, ], [], [])
             # 如果是用户输入命令了,sys.stdin发生变化

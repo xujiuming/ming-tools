@@ -1,4 +1,7 @@
+import os
+
 import click
+import yaml
 
 from src.config.global_config import default_config_dir
 
@@ -7,31 +10,62 @@ sync_config_default_file = default_config_dir + '/sync_config.yaml'
 
 
 def details():
-    click.echo("查看同步仓库配置")
+    checkSyncConfig()
+    y_read_file = open(sync_config_default_file, 'r')
+    config = yaml.safe_load(y_read_file)
+    if config is None:
+        click.echo("暂无同步仓库配置信息!")
+        return
+    else:
+        sc = SyncConfig.to_obj(config[0])
+        click.echo("仓库地址:{},用户名:{},密码:{}".format(sc.url, sc.username, sc.password))
 
 
-def create():
-    click.echo("创建同步仓库配置")
+def save(url, username, password):
+    """
+    创建配置  多次创建 会依次覆盖
+    :param url:  同步仓库url
+    :param username:  同步仓库用户名
+    :param password:  同步仓库密码
+    :return:
+    """
+    y_file = open(sync_config_default_file, 'w')
+    sc = SyncConfig(url=url, username=username, password=password)
+    yaml.safe_dump([sc.__dict__], y_file)
+    click.echo('\n录入的同步仓库信息:\n地址:{},用户名:{},密码:{}'.format(url, username, password))
 
 
 def remove():
-    click.echo("删除同步仓库配置")
-
-
-def edit():
-    click.echo("编辑同步仓库配置")
+    """
+    删除 配置文件
+    :return:
+    """
+    try:
+        checkSyncConfig()
+        os.unlink(sync_config_default_file)
+    except OSError:
+        click.echo("删除同步仓库配置失败")
+    else:
+        click.echo("删除同步仓库配置")
 
 
 def pull():
+    checkSyncConfig()
     click.echo("sync pull config")
 
 
 def push():
+    checkSyncConfig()
     click.echo("sync push config ")
 
 
 def checkSyncConfig():
-    click.echo("检查 同步仓库配置")
+    """
+    检查 配置文件是否存在
+    :return:
+    """
+    if not os.path.exists(sync_config_default_file):
+        raise Exception(click.echo("同步仓库配置不存在,请创建同步配置"))
 
 
 class SyncConfig(object):
@@ -40,14 +74,14 @@ class SyncConfig(object):
     暂时只支持 http/https 协议git 操作
     """
     # 地址
-    host: str
+    url: str
     # git用户名
     username: str
     # 密码
     password: str
 
-    def __init__(self, host, username, password):
-        self.host = host
+    def __init__(self, url, username, password):
+        self.url = url
         self.username = username
         self.password = password
 
@@ -58,5 +92,5 @@ class SyncConfig(object):
         :param d:  dict
         :return: ServerConfig
         """
-        return SyncConfig(host=d['host'], username=d['username'],
+        return SyncConfig(url=d['url'], username=d['username'],
                           password=d['password'])

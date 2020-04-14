@@ -128,19 +128,17 @@ def config_details():
     config_manager.details()
 
 
-@config.command('create', help='创建当前配置仓库配置')
-def config_create():
-    config_manager.create()
+@config.command('save', help='创建当前配置仓库配置')
+@click.option('--url', '-url', type=str, prompt='同步仓库url地址')
+@click.option('--username', '-u', type=str, prompt='同步仓库用户名')
+@click.option('--password', '-p', type=str, prompt='同步仓库密码')
+def config_save(url, username, password):
+    config_manager.save(url=url, username=username, password=password)
 
 
 @config.command('remove', help='删除当前配置仓库配置')
 def config_remove():
     config_manager.remove()
-
-
-@config.command('edit', help='编辑当前配置仓库配置')
-def config_edit():
-    config_manager.edit()
 
 
 @config.command('pull', help='同步配置远程到本地')
