@@ -14,5 +14,5 @@ pip3 install jiuming-tools
 #更新
 pip3 install --upgrade jiuming-tools
 # 使用
-ming 
+m
 ```
