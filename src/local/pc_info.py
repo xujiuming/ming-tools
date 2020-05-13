@@ -15,6 +15,7 @@ def echo_pc_info():
 
     memory_info_str = '''
 操作系统:
+  用户名:     {}
   主机名:     {}
   发行版本:   {}
   内核版本:   {}
@@ -31,6 +32,7 @@ cpu信息:
 磁盘信息:
 {}
         '''.format(
+        os.getlogin(),
         os_info.nodename,
         subprocess.getoutput('cat /etc/issue').strip('\n'),
         os_info.release,
