@@ -148,6 +148,11 @@ def config_push():
     config_manager.push()
 
 
+@config.command('clone', help='clone配置到本地')
+def config_clone():
+    config_manager.clone()
+
+
 # ---------------------------------------------- net tools  -----------------------------------------------------------
 @cli.group(help='网络相关工具')
 def net():

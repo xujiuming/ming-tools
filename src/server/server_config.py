@@ -11,10 +11,10 @@ import click
 import paramiko
 import yaml
 
-from src.config.global_config import default_config_dir
+from src.config.global_config import config_default_file
 
 # 默认配置file
-server_config_default_file = default_config_dir + '/server_config.yaml'
+server_config_default_file = config_default_file + '/server_config.yaml'
 
 
 def server_add(name, host, port, username, password):

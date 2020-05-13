@@ -1,0 +1,14 @@
+.idea
+# setup 临时目录
+ming.egg-info
+jiuming_tools.egg-info
+build
+dist
+将删除 .gitignore
+将删除 .idea/.gitignore
+将删除 .idea/inspectionProfiles/
+将删除 .idea/intellij-javadocs-4.0.1.xml
+将删除 .idea/jiuming-tools.iml
+将删除 .idea/misc.xml
+将删除 .idea/modules.xml
+将删除 .idea/vcs.xml
