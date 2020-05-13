@@ -93,11 +93,16 @@ def server_connect(name):
     if config_list is None:
         click.echo("暂无{}服务器配置信息!".format(name))
         return
+    connect_sc = None
     for c in config_list:
         sc = ServerConfig.to_obj(c)
         if sc.name == name:
-            open_ssh_tty(sc.host, sc.port, sc.username, sc.password)
+            connect_sc = sc
             break
+    if connect_sc is None:
+        click.echo("不存在{}服务器配置！".format(name))
+        return
+    open_ssh_tty(connect_sc.host, connect_sc.port, connect_sc.username, connect_sc.password)
 
 
 def open_ssh_tty(host, port, username, password):

@@ -65,7 +65,7 @@ def server_list():
 @click.option('--username', '-u', prompt='请输入服务器用户名')
 @click.option('--password', '-pwd', prompt='请输入密码')
 def server_add(name, host, port, username, password):
-    server_config.server_add(name, host, port, username, password)
+    server_config.server_add(str(name).strip(), host, port, username, password)
 
 
 @server.command("remove", help='根据名称删除服务器配置')
