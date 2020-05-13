@@ -92,7 +92,7 @@ def local():
     pass
 
 
-@local.command('pc-info', help='电脑配置')
+@local.command('pc', help='电脑配置')
 def local_pc_info():
     pc_info.echo_pc_info()
 
