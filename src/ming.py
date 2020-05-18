@@ -4,8 +4,7 @@ import click
 
 from src.config import global_config, config_manager
 from src.config.global_config import compile_ip, compile_host_mame
-from src.local import http_server, pc_info
-from src.net import net_manager
+from src.local import http_server, pc_info, net_manager
 from src.server import server_config
 
 
@@ -106,6 +105,11 @@ def local_tmp_http(d, port, host):
     http_server.http_server(d, port, host)
 
 
+@local.command('test', help='测试服务器是否可以打开socket')
+@click.option('--host', '-h', type=str, prompt='请输入服务器地址', callback=validate_ip_or_host_name_type, help='服务器地址')
+@click.option('--port', '-p', type=int, default=80, help='探测端口号(默认为80)')
+def net_test(host, port):
+    net_manager.net_test(host, port)
 # ----------------------------------- tools config manager  -----------------------------------------------------------
 
 config_remark = """
@@ -153,17 +157,9 @@ def config_clone():
     config_manager.clone()
 
 
-# ---------------------------------------------- net tools  -----------------------------------------------------------
-@cli.group(help='网络相关工具')
-def net():
-    pass
 
 
-@net.command('test', help='测试服务器是否可以打开socket')
-@click.option('--host', '-h', type=str, prompt='请输入服务器地址', callback=validate_ip_or_host_name_type, help='服务器地址')
-@click.option('--port', '-p', type=int, default=80, help='探测端口号(默认为80)')
-def net_test(host, port):
-    net_manager.net_test(host, port)
+
 
 
 # ming 函数
