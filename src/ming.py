@@ -107,9 +107,11 @@ def local_tmp_http(d, port, host):
 
 @local.command('net-test', help='测试服务器是否可以打开socket')
 @click.option('--host', '-h', type=str, prompt='请输入服务器地址', callback=validate_ip_or_host_name_type, help='服务器地址')
-@click.option('--port', '-p', type=int, default=80, help='探测端口号(默认为80)')
+@click.option('--port', '-p', type=int, default=20000, help='探测端口号(默认为20000)')
 def net_test(host, port):
     net_manager.net_test(host, port)
+
+
 # ----------------------------------- tools config manager  -----------------------------------------------------------
 
 config_remark = """
@@ -155,11 +157,6 @@ def config_push():
 @config.command('clone', help='clone配置到本地')
 def config_clone():
     config_manager.clone()
-
-
-
-
-
 
 
 # ming 函数
