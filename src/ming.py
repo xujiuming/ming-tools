@@ -98,7 +98,7 @@ def local_pc_info():
 
 @local.command('http', help='根据指定文件夹开启临时http服务器')
 @click.option('--d', '-d', type=click.Path(exists=True), default='.', nargs=1, help='指定静态文件目录,默认为.')
-@click.option('--port', '-p', default=80, type=int, nargs=1, help='指定服务端口,默认为80')
+@click.option('--port', '-p', default=20000, type=int, nargs=1, help='指定服务端口,默认为20000')
 @click.option('--host', '-h', default='0.0.0.0', callback=validate_ip_or_host_name_type, type=str, nargs=1,
               help='指定服务监听地址,默认为0.0.0.0')
 def local_tmp_http(d, port, host):
@@ -107,11 +107,9 @@ def local_tmp_http(d, port, host):
 
 @local.command('net-test', help='测试服务器是否可以打开socket')
 @click.option('--host', '-h', type=str, prompt='请输入服务器地址', callback=validate_ip_or_host_name_type, help='服务器地址')
-@click.option('--port', '-p', type=int, default=20000, help='探测端口号(默认为20000)')
+@click.option('--port', '-p', type=int, default=80, help='探测端口号(默认为80)')
 def net_test(host, port):
     net_manager.net_test(host, port)
-
-
 # ----------------------------------- tools config manager  -----------------------------------------------------------
 
 config_remark = """
@@ -157,6 +155,11 @@ def config_push():
 @config.command('clone', help='clone配置到本地')
 def config_clone():
     config_manager.clone()
+
+
+
+
+
 
 
 # ming 函数
