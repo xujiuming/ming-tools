@@ -29,6 +29,9 @@ cpu信息:
 内存信息:
 {}
 
+网卡信息:
+{}
+
 磁盘信息:
 {}
         '''.format(
@@ -41,6 +44,7 @@ cpu信息:
         psutil.cpu_count(logical=False),
         psutil.cpu_count(),
         subprocess.getoutput('free -h'),
+        subprocess.getoutput('ip addr'),
         subprocess.getoutput('df -h')
     )
     click.echo(memory_info_str)
