@@ -105,7 +105,7 @@ def local_tmp_http(d, port, host):
     http_server.http_server(d, port, host)
 
 
-@local.command('net-test', help='测试服务器是否可以打开socket')
+@local.command('socket-test', help='测试服务器是否可以打开socket')
 @click.option('--host', '-h', type=str, prompt='请输入服务器地址', callback=validate_ip_or_host_name_type, help='服务器地址')
 @click.option('--port', '-p', type=int, default=80, help='探测端口号(默认为80)')
 def net_test(host, port):
