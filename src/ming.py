@@ -110,6 +110,8 @@ def local_tmp_http(d, port, host):
 @click.option('--port', '-p', type=int, default=80, help='探测端口号(默认为80)')
 def net_test(host, port):
     net_manager.net_test(host, port)
+
+
 # ----------------------------------- tools config manager  -----------------------------------------------------------
 
 config_remark = """
@@ -157,9 +159,43 @@ def config_clone():
     config_manager.clone()
 
 
+# ----------------------------------- tools config manager  -----------------------------------------------------------
+# linux 各种脚本管理   shell 、py 等脚本
 
 
+@cli.group(help='管理常用linux的脚本')
+def script():
+    pass
 
+
+@script.command('remove', help='删除脚本')
+def script_remove():
+    pass
+
+
+@script.command('create', help='创建脚本')
+def script_create():
+    pass
+
+
+@script.command('details', help='查看脚本详情')
+def script_details():
+    pass
+
+
+@script.command('list', help='列出当前脚本')
+def script_list():
+    pass
+
+
+@script.command('edit', help='编辑脚本')
+def script_edit():
+    pass
+
+
+@script.command('exec', help='执行脚本')
+def script_exec():
+    pass
 
 
 # ming 函数
