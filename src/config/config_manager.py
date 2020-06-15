@@ -65,12 +65,13 @@ def pull():
     click.echo("sync pull config")
 
 
-def push():
+def push(remark):
     checkSyncConfig()
     git_par = git.Repo(path=config_default_file).git
     git_par.add('./*')
     # 当工作区不是干净的 就进行 commit -》 push
-    commit_str = '\'{},同步jiuming-tools配置\''.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())))
+    commit_str = '\'{},同步jiuming-tools配置,{}\''.format(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())),
+                                                      remark)
     git_par.commit('-m {}'.format(commit_str))
     git_par.push()
     click.echo("推送配置：{}".format(commit_str))
