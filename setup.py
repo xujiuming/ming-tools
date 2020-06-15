@@ -9,6 +9,7 @@ setup(
     version=global_config.version,
     packages=find_packages(),
     include_package_data=True,
+    platforms='linux',
     # 需要的依赖
     install_requires=[
         'Click==7.0',
@@ -21,7 +22,7 @@ setup(
     # 命令行入口
     entry_points='''
         [console_scripts]
-        mtmp=src.ming:cli
+        m=src.ming:cli
     ''',
     author='ming',
     license='MIT',

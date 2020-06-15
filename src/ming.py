@@ -151,8 +151,9 @@ def config_pull():
 
 
 @config.command('push', help='同步配置本地到远程仓库')
-def config_push():
-    config_manager.push()
+@click.option('--remark', '-r', type=str, help='推送备注')
+def config_push(remark):
+    config_manager.push(remark)
 
 
 @config.command('clone', help='clone配置到本地')
