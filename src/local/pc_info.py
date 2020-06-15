@@ -12,6 +12,8 @@ def echo_pc_info():
     :return:
     """
     os_info = os.uname()
+    # 获取当前系统虚拟化方式
+    virtual_type_str = str.split(subprocess.getoutput("lscpu | grep -E  '超管理器厂商|Hypervisor vendor'").strip(''))[1]
 
     memory_info_str = '''
 操作系统:
@@ -20,7 +22,7 @@ def echo_pc_info():
   发行版本:   {}
   内核版本:   {}
   硬件架构:   {}
-  
+  虚拟化方式:  {}
 cpu信息:
   cpu型号:    {}
   cpu物理核心: {}
@@ -40,6 +42,7 @@ cpu信息:
         subprocess.getoutput('cat /etc/issue').strip('\n'),
         os_info.release,
         os_info.machine,
+        virtual_type_str,
         cpu_info().modelName,
         psutil.cpu_count(logical=False),
         psutil.cpu_count(),

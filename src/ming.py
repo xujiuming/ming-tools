@@ -5,6 +5,7 @@ import click
 from src.config import global_config, config_manager
 from src.config.global_config import compile_ip, compile_host_mame
 from src.local import http_server, pc_info, net_manager
+from src.script import script_manager
 from src.server import server_config
 
 
@@ -174,8 +175,11 @@ def script_remove():
 
 
 @script.command('create', help='创建脚本')
-def script_create():
-    pass
+@click.option('--type', '-t', prompt='脚本类型(执行引擎名称)')
+@click.option('--name', '-n', prompt='脚本名称')
+@click.option('--remark', '-r', prompt='备注描述')
+def script_create(type, name, remark):
+    script_manager.script_create(type, name, remark)
 
 
 @script.command('details', help='查看脚本详情')
