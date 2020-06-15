@@ -36,6 +36,9 @@ def print_version(ctx, param, value):
     version_info = """
     作者:ming 
     仅适用linux 其他平台兼容性不做保证
+    启用自动补全:
+    bash:在.bashrc末尾添加 eval "$(_M_COMPLETE=source m)"
+    zsh:在.zshrc末尾添加 eval "$(_M_COMPLETE=source_zsh m)"
     jiuming-tools Version {}""".format(global_config.version)
     click.echo(version_info)
     ctx.exit()
