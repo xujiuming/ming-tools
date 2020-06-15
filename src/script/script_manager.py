@@ -2,14 +2,12 @@ import copy
 import os
 import pathlib
 import stat
-import subprocess
 import time
 
 import click
 import yaml
 
 from src.config.global_config import config_default_file, script_default_file
-from src.utils.timeUtils import count_time
 
 script_config_default_file = config_default_file + '/script_config.yaml'
 
@@ -114,7 +112,8 @@ def script_exec(name):
         sc = ScriptConfig.to_obj(c)
         if sc.name == name:
             start_time = time.perf_counter_ns()
-            click.echo(click.style("{}脚本开始执行,脚本引擎{},脚本备注:{},脚本地址:{}".format(sc.name, sc.type, sc.remark, sc.path), fg='green'))
+            click.echo(
+                click.style("{}脚本开始执行,脚本引擎{},脚本备注:{},脚本地址:{}".format(sc.name, sc.type, sc.remark, sc.path), fg='green'))
             click.echo(click.style("start--------------------------------", fg='green'))
             result = os.system(sc.path)
             end_time = time.perf_counter_ns()

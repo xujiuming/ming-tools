@@ -16,6 +16,7 @@ def count_time(info="计时"):
             print("{}耗时:{}μs,结果:{}".format(info, str(
                 round((int(round((end_time - start_time) * 1000000))), 2)), str(result)))
             return result
-        return _wrapper
-    return _count_time
 
+        return _wrapper
+
+    return _count_time

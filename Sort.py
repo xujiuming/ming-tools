@@ -5,7 +5,6 @@
 # 未排序之前的数组   每个函数排序的时候 请深拷贝 避免对原数组进行操作
 import copy
 import random
-import time
 
 from src.utils.timeUtils import count_time
 
@@ -87,7 +86,7 @@ def selection_sort_n_1(l: list):
 
 
 @count_time("插入排序")
-def insert_sort(l:list):
+def insert_sort(l: list):
     """
     插入排序
 
@@ -95,6 +94,7 @@ def insert_sort(l:list):
     :param l:
     :return:
     """
+
 
 if __name__ == '__main__':
     """
