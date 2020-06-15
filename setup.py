@@ -21,7 +21,7 @@ setup(
     # 命令行入口
     entry_points='''
         [console_scripts]
-        m=src.ming:cli
+        mtmp=src.ming:cli
     ''',
     author='ming',
     license='MIT',

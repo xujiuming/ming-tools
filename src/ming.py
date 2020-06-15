@@ -170,8 +170,9 @@ def script():
 
 
 @script.command('remove', help='删除脚本')
-def script_remove():
-    pass
+@click.option('--name', '-n', prompt='脚本名称')
+def script_remove(name):
+    script_manager.script_remove(name)
 
 
 @script.command('create', help='创建脚本')
@@ -183,25 +184,22 @@ def script_create(type, name, remark):
 
 
 @script.command('details', help='查看脚本详情')
-def script_details():
-    pass
+@click.option('--name', '-n', prompt='脚本名称')
+def script_details(name):
+    script_manager.script_details(name)
 
 
 @script.command('list', help='列出当前脚本')
 def script_list():
-    pass
-
-
-@script.command('edit', help='编辑脚本')
-def script_edit():
-    pass
+    script_manager.script_list()
 
 
 @script.command('exec', help='执行脚本')
-def script_exec():
-    pass
+@click.option('--name', '-n', prompt='脚本名称')
+def script_exec(name):
+    script_manager.script_exec(name)
 
 
-# ming 函数
+# main 函数
 if __name__ == '__main__':
     cli()
