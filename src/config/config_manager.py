@@ -1,4 +1,5 @@
 import os
+import shutil
 import time
 from urllib.parse import quote
 
@@ -93,8 +94,13 @@ def clone():
     :return:
     """
     if os.path.exists(config_default_file):
-        click.echo("已存在工具配置，目录:{}".format(config_default_file))
-        return
+        if click.confirm("是否删除{}文件夹?".format(config_default_file)):
+            # 删除整个目录
+            shutil.rmtree(config_default_file)
+            click.echo("删除{}文件夹....".format(config_default_file))
+        else:
+            click.echo("已存在工具配置，目录:{}".format(config_default_file))
+            return
     checkSyncConfig()
     y_read_file = open(sync_config_default_file, 'r')
     config = yaml.safe_load(y_read_file)
