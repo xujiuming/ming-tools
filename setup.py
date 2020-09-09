@@ -17,7 +17,8 @@ setup(
         'PyYAML==5.2',
         'paramiko==2.7.1',
         'gitpython==3.1.1',
-        'bcrypt==3.1.7'
+        'bcrypt==3.1.7',
+        'speedtest-cli'
     ],
     # 命令行入口
     entry_points='''

@@ -17,3 +17,7 @@ ming server edit
 ming local
 ming local pc-info
 ming local http
+
+
+time dd if=/dev/zero of=./disk.test bs=4k count=1000000
+time dd if=./disk.test of=/dev/null bs=4k
