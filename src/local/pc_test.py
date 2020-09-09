@@ -1,6 +1,7 @@
 import subprocess
-import speedtest
+
 import click
+import speedtest
 
 
 def testDisk():
