@@ -116,14 +116,16 @@ def socket_test(host, port):
     net_manager.net_test(host, port)
 
 
-@local.command('test-disk',help='测试服务器磁盘性能')
+@local.command('test-disk', help='测试服务器磁盘性能')
 def test_disk():
     pc_test.testDisk()
 
 
-@local.command('test-net',help='测试服务器网络速度')
+@local.command('test-net', help='测试服务器网络速度')
 def test_network():
     pc_test.testNetwork()
+
+
 # ----------------------------------- tools config manager  -----------------------------------------------------------
 
 config_remark = """
