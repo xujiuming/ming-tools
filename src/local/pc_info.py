@@ -42,7 +42,7 @@ cpu信息:
         subprocess.getoutput('cat /etc/issue').strip('\n'),
         os_info.release,
         os_info.machine,
-        virtual_type_str,
+        virtual_type_str if virtual_type_str is not None else "无",
         cpu_info().modelName,
         psutil.cpu_count(logical=False),
         psutil.cpu_count(),
