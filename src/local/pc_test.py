@@ -9,7 +9,7 @@ def testDisk():
      测试磁盘性能
     """
     click.echo("测试写入速度中。。。。。。")
-    click.echo(subprocess.getoutput('time dd if=/dev/zero of=./disk.test bs=4k count=1000000'))
+    click.echo(subprocess.getoutput('time dd if=/dev/zero of=./disk.test bs=4k count=500000'))
     click.echo("测试读取速度中。。。。。。")
     click.echo(subprocess.getoutput('time dd if=./disk.test of=/dev/null bs=4k'))
     click.echo(subprocess.getoutput('rm -rf ./disk.test'))
@@ -42,6 +42,5 @@ def testNetwork():
 def testMemory():
     """
     测试内存性能
-
     """
     pass
