@@ -117,13 +117,15 @@ def socket_test(host, port):
 
 
 @local.command('test-disk', help='测试服务器磁盘性能')
-def test_disk():
-    pc_test.testDisk()
+@click.option('--size', '-s', type=int, default=2, help='测试磁盘数据大小，单位GB，默认2GB')
+def test_disk(size):
+    pc_test.testDisk(size)
 
 
 @local.command('test-net', help='测试服务器网络速度')
-def test_network():
-    pc_test.testNetwork()
+@click.option('--threads', '-t', type=int, default=None, help='线程数,默认为speettest的默认参数')
+def test_network(threads):
+    pc_test.testNetwork(threads)
 
 
 # ----------------------------------- tools config manager  -----------------------------------------------------------
