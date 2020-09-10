@@ -36,4 +36,12 @@ def testNetwork():
     click.echo('服务器名称: %(sponsor)s (%(name)s)\n距离:%(d)0.2f km\n延迟:%(latency)s ms' % results.server)
     click.echo('下载带宽: %0.2f Mbit/s\n下载速度: %0.2f MB/s' % (downloadMbits, downloadMbits / 8))
     click.echo('上传带宽: %0.2f Mbit/s\n上传速度: %0.2f MB/s' % (uploadMbits, uploadMbits / 8))
-    click.echo('测速结图片地址: %s' % results.share())
+    click.echo('测速结果图片地址: %s' % results.share())
+
+
+def testMemory():
+    """
+    测试内存性能
+
+    """
+    pass
