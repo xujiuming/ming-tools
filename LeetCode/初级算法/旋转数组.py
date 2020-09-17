@@ -14,21 +14,34 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-
-        def reverseNums(nums: List[int], start: int, end: int):
-            while start < end:
-                nums[start], nums[end] = nums[end], nums[start]
-                start += 1
-                end -= 1
-
         nums_len = len(nums)
-        kn = k % nums_len
-        # 反转全部元素
-        reverseNums(nums, 0, nums_len - 1)
-        # 反转[0,k%n]数组
-        reverseNums(nums, 0, kn - 1)
-        # 反转[k%n,n]
-        reverseNums(nums, kn, nums_len - 1)
+        kl = k % nums_len
+        # 总共要替换count次才能成功
+        count = 0
+        # 从0元素开始
+        start = 0
+        while count < nums_len:
+            # 当前元素为start
+            current = start
+            # 下一个元素的值
+            prev = nums[start]
+            while True:
+                # 获取当前元素应该在的位置
+                next = (current + kl) % nums_len
+                # 把替换位置的元素存储到临时变量
+                temp = nums[next]
+                # 将元素放到正确的位置
+                nums[next] = prev
+                # 下一个元素为刚刚替换掉的元素
+                prev = temp
+                # 刚刚替换掉的元素为当前处理元素
+                current = next
+                # 置换次数+1
+                count += 1
+                # 当当前元素位置跟开始位置相同 证明已经替换一轮  本元素不再处理  处理 start+1元素
+                if current == start:
+                    start += 1
+                    break
 
 
 def reverseNums(nums: List[int], start: int, end: int):
