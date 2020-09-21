@@ -1,13 +1,22 @@
 使用 python3  + click  编写的个人常用的工具  
+* 服务器管理 
+```shell script
+m server 
+```
+* 本地常用工具 
+```shell script
+m local 
+```
+* 常用脚本管理
+```shell script
+m script 
+```
+* 本身配置管理 
+```shell script
+m config 
+```
 
-* 简易管理服务器
-* 在线备份配置 tools 配置  
-* 建立临时http共享目录
-* 获取设备基本信息 
-* 管理常用脚本   
-* 测试socket是否能连通   
-
-
+#### 安装更新工具  
 ```shell script
 # ubuntu 使用python3 版本的pip 名字默认为pip3 
 #安装
@@ -20,3 +29,4 @@ m
 #bash:在.bashrc末尾添加 eval "$(_M_COMPLETE=source m)"
 #zsh:在.zshrc末尾添加 eval "$(_M_COMPLETE=source_zsh m)"
 ```
+

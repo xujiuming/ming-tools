@@ -82,7 +82,7 @@ def server_edit():
     server_config.server_edit()
 
 
-@server.command('connect', help='🔗连接服务器')
+@server.command('connect', help='连接服务器')
 @click.option('--name', '-n', type=str, prompt='请输入服务器名称', help='服务器名称')
 def server_connect(name):
     server_config.server_connect(name)
