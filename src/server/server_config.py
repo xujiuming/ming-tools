@@ -9,6 +9,7 @@ import tty
 
 import click
 import paramiko
+import pexpect
 import yaml
 
 from src.config.global_config import config_default_file
@@ -121,7 +122,6 @@ def open_ssh_tty(host, port, username, password):
     channel.get_pty(width=terminal_size.columns, height=terminal_size.lines)
     # 激活终端，这样就可以登录到终端了，就和我们用类似于xshell登录系统一样
     channel.invoke_shell()
-
     # 获取原操作终端属性
     oldtty = termios.tcgetattr(sys.stdin)
     try:
@@ -158,6 +158,34 @@ def open_ssh_tty(host, port, username, password):
     channel.close()
     # 关闭链接
     trans.close()
+
+
+def server_sftp(name, cwd_path):
+    click.echo("连接{}服务器sftp服务...".format(name))
+    config_list = yaml.safe_load(open(server_config_default_file, 'r'))
+    if config_list is None:
+        click.echo("暂无{}服务器配置信息!".format(name))
+        return
+    connect_sc = None
+    for c in config_list:
+        sc = ServerConfig.to_obj(c)
+        if sc.name == name:
+            connect_sc = sc
+            break
+    if connect_sc is None:
+        click.echo("不存在{}服务器配置！".format(name))
+        return
+    # 执行sftp命令
+    cmd = 'sftp -P {} {}@{}'.format(connect_sc.port, connect_sc.username, connect_sc.host)
+    p_sftp = pexpect.spawn(command=cmd, cwd=cwd_path)
+    # 输入密码
+    p_sftp.expect("password:")
+    p_sftp.sendline(connect_sc.password)
+    # 设置终端大小
+    terminal_size = os.get_terminal_size()
+    p_sftp.setwinsize(terminal_size.lines, terminal_size.columns)
+    # 显示sftp终端
+    p_sftp.interact()
 
 
 class ServerConfig(object):

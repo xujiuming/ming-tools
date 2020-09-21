@@ -18,7 +18,8 @@ setup(
         'paramiko==2.7.1',
         'gitpython==3.1.1',
         'bcrypt==3.1.7',
-        'speedtest-cli'
+        'speedtest-cli',
+        'pexpect'
     ],
     # 命令行入口
     entry_points='''

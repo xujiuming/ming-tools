@@ -12,6 +12,7 @@ twine = "==3.1.1"
 gitpython = "==3.1.1"
 bcrypt = "==3.1.7"
 speedtest-cli = "*"
+pexpect = "~=4.8.0"
 
 [dev-packages]
 #[requires]

@@ -88,6 +88,13 @@ def server_connect(name):
     server_config.server_connect(name)
 
 
+@server.command('sftp', help='打开sftp客户端')
+@click.option('--name', '-n', type=str, prompt='请输入服务器名称', help='服务器名称')
+@click.option('--cwd', '-cwd', type=click.Path(exists=True), default='.', help='本地工作目录,默认为.')
+def server_sftp(name, cwd):
+    server_config.server_sftp(name, cwd)
+
+
 # ----------------------------------- local tools ----------------------------------------------------------------------
 
 @cli.group(help='本机使用的工具')
