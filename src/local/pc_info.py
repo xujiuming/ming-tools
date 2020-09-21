@@ -50,6 +50,11 @@ cpu信息:
         subprocess.getoutput('ip addr'),
         subprocess.getoutput('df -h')
     )
+    # 尝试执行 screenfetch
+    try:
+        memory_info_str += '\nscreenfetch:{}'.format(subprocess.getoutput("screenfetch").strip('\n'))
+    except OSError:
+        pass
     click.echo(memory_info_str)
 
 

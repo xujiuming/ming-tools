@@ -1,7 +1,7 @@
 #!/bin/bash
 # author ming
 # 测试脚本 测试工具是否完善
-ming
+mingmeiy
 ming -v
 ming -version
 # server功能
