@@ -16,7 +16,7 @@ def http_server(d, port, host):
     handler = partial(MingHttpHandler, directory=d)
     httpd = HTTPServer((host, port), handler)
     click.echo(
-        'http server start.............监听地址:{}:{} \nhttp://{}:{}'.format(host, port, iputils.get_host_ip(), port))
+        'http server start.............\n监听地址:\nhttp://{}:{}\nhttp://{}:{}'.format(host, port, iputils.get_host_ip(), port))
     httpd.serve_forever(poll_interval=0.1)
 
 
