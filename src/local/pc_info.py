@@ -52,7 +52,11 @@ cpu信息:
     )
     # 尝试执行 screenfetch
     try:
-        memory_info_str += '\nscreenfetch:{}'.format(subprocess.getoutput("screenfetch").strip('\n'))
+        res = subprocess.Popen("screenfetch", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        sout, serr = res.communicate()
+        # res.returncode, sout, serr, res.pid
+        if res.returncode == 0:
+            memory_info_str += '\nscreenfetch:\n{}'.format(sout.decode('utf-8'))
     except OSError:
         pass
     click.echo(memory_info_str)
