@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f698a5172101207538209041f9105dbaf21590d9b3361e65dcc77ae4c127af95"
+            "sha256": "717f027337bab5d0797c8b01ed4a3b67aedffeed71915f02835f44d88a90df4f"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -300,6 +300,13 @@
             ],
             "version": "==0.9.1"
         },
+        "scapy": {
+            "hashes": [
+                "sha256:ecfd7a14cd9c3ef0eb08d28d5bb71d97219edff1454ccbdff229f676b27900ee"
+            ],
+            "index": "aliyun",
+            "version": "==2.4.4"
+        },
         "secretstorage": {
             "hashes": [
                 "sha256:46305c3847ee3f7252b284e0eee5590fa6341c891104a2fd2313f8798c615a82",
@@ -339,6 +346,14 @@
             ],
             "markers": "python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'",
             "version": "==4.52.0"
+        },
+        "traceroute": {
+            "hashes": [
+                "sha256:13afcf703acfba0a20050e2a6ba9f80f74d3d9e2b23f56fc36f4bbcb0a3e116c",
+                "sha256:24efbcac4495d08b0ba290cd1c16854af5fc0b222bdcec14da0c9559784a0ba7"
+            ],
+            "index": "aliyun",
+            "version": "==19.2.0"
         },
         "twine": {
             "hashes": [

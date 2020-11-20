@@ -39,6 +39,7 @@ def print_version(ctx, param, value):
     启用自动补全:
     bash:在.bashrc末尾添加 eval "$(_M_COMPLETE=source m)"
     zsh:在.zshrc末尾添加 eval "$(_M_COMPLETE=source_zsh m)"
+    依赖的工具：ssh、sftp、vi、dd、git、free、ip、cat、graphviz
     jiuming-tools Version {}""".format(global_config.version)
     click.echo(version_info)
     ctx.exit()
@@ -69,7 +70,7 @@ def server_list():
 @click.option('--password', '-pwd', prompt='请输入密码')
 @click.option('--path', '-path', prompt='密钥位置')
 def server_add(name, host, port, username, password, path):
-    server_config.server_add(str(name).strip(), host, port, username, password,path)
+    server_config.server_add(str(name).strip(), host, port, username, password, path)
 
 
 @server.command("remove", help='根据名称删除服务器配置')
