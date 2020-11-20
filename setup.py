@@ -15,7 +15,6 @@ setup(
         'Click==7.0',
         'psutil==5.6.7',
         'PyYAML==5.2',
-        'paramiko==2.7.1',
         'gitpython==3.1.1',
         'bcrypt==3.1.7',
         'speedtest-cli',
