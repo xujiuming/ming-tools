@@ -21,8 +21,8 @@ if not os.path.exists(script_default_file):
 
 #ssh 私钥默认文件夹
 private_key_default_file = '{}/.jiuming-tools/config/privateKey'.format(os.path.expanduser('~'))
-if not os.path.exists(script_default_file):
-    os.makedirs(script_default_file)
+if not os.path.exists(private_key_default_file):
+    os.makedirs(private_key_default_file)
 
 
 
