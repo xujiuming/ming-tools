@@ -102,7 +102,16 @@ def server_connect(name):
 
 
 def open_ssh_tty(host, port, username, password):
-   pass
+    cmd = 'ssh -o StrictHostKeyChecking=no  -p {} {}@{}'.format(port, username, host)
+    p_ssh = pexpect.spawn(command=cmd)
+    # 输入密码
+    p_ssh.expect("password:")
+    p_ssh.sendline(password)
+    # 设置终端大小
+    terminal_size = os.get_terminal_size()
+    p_ssh.setwinsize(terminal_size.lines, terminal_size.columns)
+    # 显示终端
+    p_ssh.interact()
 
 
 def server_sftp(name, cwd_path):

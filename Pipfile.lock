@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d60bfbd36a21feafef7e4914ce27b125c11328c036c979cb7faf95238b8f86b3"
+            "sha256": "f698a5172101207538209041f9105dbaf21590d9b3361e65dcc77ae4c127af95"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -177,6 +177,10 @@
             ],
             "markers": "sys_platform == 'linux'",
             "version": "==0.6.0"
+        },
+        "jiuming-tools": {
+            "editable": true,
+            "path": "."
         },
         "keyring": {
             "hashes": [
