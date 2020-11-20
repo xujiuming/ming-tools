@@ -2,18 +2,19 @@
 import copy
 import os
 import pathlib
+import shutil
 
 import click
 import pexpect
 import yaml
 
-from src.config.global_config import config_default_file
+from src.config.global_config import config_default_file, private_key_default_file
 
 # 默认配置file
 server_config_default_file = config_default_file + '/server_config.yaml'
 
 
-def server_add(name, host, port, username, password):
+def server_add(name, host, port, username, password, path):
     """
     添加服务配置
     :param name: 服务器名称
@@ -21,13 +22,24 @@ def server_add(name, host, port, username, password):
     :param port: 服务器ssh端口
     :param username: 服务器用户名
     :param password: 服务器用户密码
+    :param path: 文件地址
     :return:
     """
+    secretKeyPath = None
+    if path is not None:
+        if os.path.exists(path) and os.path.isfile(path):
+            # 计算密钥地址
+            secretKeyPath = private_key_default_file + '/{}_{}_{}.id_rsa'.format(name, username, host)
+            # 复制密钥到配置目录命名规则 服务器名_用户名_host地址
+            shutil.copyfile(path, secretKeyPath)
+        else:
+            raise click.FileError('保存密钥异常！未找到密钥或者无权限')
     # 追加模式
     y_file = open(server_config_default_file, 'a+')
-    sc = ServerConfig(name=name, host=host, port=port, username=username, password=password)
+    sc = ServerConfig(name=name, host=host, port=port, username=username, password=password,
+                      secretKeyPath=secretKeyPath)
     yaml.safe_dump([sc.__dict__], y_file)
-    click.echo('\n录入的服务器信息:\n名称:{}\n地址:{}\nssh端口:{}\n密码:{}'.format(name, host, port, password))
+    click.echo('\n录入的服务器信息:\n名称:{}\n地址:{}\nssh端口:{}'.format(name, host, port))
 
 
 def server_edit():
@@ -159,12 +171,13 @@ class ServerConfig(object):
     # 密钥位置
     secretKeyPath: str
 
-    def __init__(self, name, host, port, username, password):
+    def __init__(self, name, host, port, username, password, secretKeyPath):
         self.name = name
         self.host = host
         self.port = port
         self.username = username
         self.password = password
+        self.secretKeyPath = secretKeyPath
 
     @staticmethod
     def to_obj(d: dict):
@@ -174,4 +187,4 @@ class ServerConfig(object):
         :return: ServerConfig
         """
         return ServerConfig(name=d['name'], host=d['host'], port=d['port'], username=d['username'],
-                            password=d['password'])
+                            password=d['password'], secretKeyPath=d['secretKeyPath'])

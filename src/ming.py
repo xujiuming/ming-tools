@@ -67,8 +67,9 @@ def server_list():
 @click.option('--port', '-p', prompt='请输入服务器ssh端口,默认为22', default=22)
 @click.option('--username', '-u', prompt='请输入服务器用户名')
 @click.option('--password', '-pwd', prompt='请输入密码')
-def server_add(name, host, port, username, password):
-    server_config.server_add(str(name).strip(), host, port, username, password)
+@click.option('--privateKeyPath', '-path', prompt='密钥位置')
+def server_add(name, host, port, username, password,privateKeyPath):
+    server_config.server_add(str(name).strip(), host, port, username, password,privateKeyPath)
 
 
 @server.command("remove", help='根据名称删除服务器配置')
