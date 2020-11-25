@@ -110,12 +110,21 @@ def local_pc_info():
 
 
 @local.command('http', help='根据指定文件夹开启临时http服务器')
-@click.option('--d', '-d', type=click.Path(exists=True), default='.', nargs=1, help='指定静态文件目录,默认为.')
+@click.option('--dir', '-d', type=click.Path(exists=True), default='.', nargs=1, help='指定静态文件目录,默认为.')
 @click.option('--port', '-p', default=20000, type=int, nargs=1, help='指定服务端口,默认为20000')
 @click.option('--host', '-h', default='0.0.0.0', callback=validate_ip_or_host_name_type, type=str, nargs=1,
               help='指定服务监听地址,默认为0.0.0.0')
-def local_tmp_http(d, port, host):
-    http_server.http_server(d, port, host)
+def local_tmp_http(dir, port, host):
+    http_server.http_server(dir, port, host)
+
+
+@local.command('traceroute', help='路由跟踪,需要root权限')
+@click.option('--dir', '-d', type=click.Path(exists=True), default='.', nargs=1, help='生成svg文件目录,默认为.')
+@click.option('--port', '-p', default=80, type=int, nargs=1, help='端口,默认为80')
+@click.option('--host', '-h', default='0.0.0.0', callback=validate_ip_or_host_name_type, type=str, nargs=1,
+              help='跟踪地址,默认为0.0.0.0')
+def local_traceroute(dir, port, host):
+    net_manager.trace_route(dir, port, host)
 
 
 @local.command('socket-test', help='测试服务器是否可以打开socket')

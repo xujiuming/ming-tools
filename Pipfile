@@ -14,7 +14,7 @@ speedtest-cli = "*"
 pexpect = "~=4.8.0"
 jiuming-tools = {editable = true, path = "."}
 scapy = "*"
-traceroute = "*"
+#traceroute = "*"
 
 [dev-packages]
 #[requires]

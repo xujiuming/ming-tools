@@ -18,7 +18,8 @@ setup(
         'gitpython==3.1.1',
         'bcrypt==3.1.7',
         'speedtest-cli',
-        'pexpect'
+        'pexpect',
+        'scapy'
     ],
     # 命令行入口
     entry_points='''
