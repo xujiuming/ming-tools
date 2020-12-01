@@ -2,6 +2,7 @@ import asyncio
 import os
 import re
 import subprocess
+import time
 
 import click
 import psutil
@@ -10,8 +11,9 @@ import psutil
 async def asyncGetScreenfetch():
     # 尝试执行 screenfetch
     try:
-        res = await subprocess.Popen("screenfetch", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        sout, serr = res.communicate()
+        res = await asyncio.create_subprocess_shell("screenfetch", stdout=asyncio.subprocess.PIPE,
+                                                    stderr=asyncio.subprocess.PIPE)
+        sout, serr = await res.communicate()
         # res.returncode, sout, serr, res.pid
         if res.returncode == 0:
             return sout.decode('utf-8')
@@ -25,7 +27,10 @@ def echo_pc_info():
     :return:
     """
     loop = asyncio.get_event_loop()
+    # 异步执行 screenfetch
+    # 异步解析 cpu信息 cpu_info().modelName
     screenfetch_future = asyncio.ensure_future(asyncGetScreenfetch(), loop=loop)
+    loop.run_until_complete(screenfetch_future)
 
     os_info = os.uname()
     # 获取当前系统虚拟化方式
@@ -70,7 +75,9 @@ cpu信息:
         subprocess.getoutput('df -h')
     )
     # 尝试执行 screenfetch
-    memory_info_str += '\nscreenfetch:\n{}'.format(str(screenfetch_future.result()))
+    screenfetch_result = screenfetch_future.result()
+    if screenfetch_future is not None:
+        memory_info_str += '\nscreenfetch:\n{}'.format(str(screenfetch_result))
     click.echo(memory_info_str)
 
 
