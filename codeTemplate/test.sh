@@ -4,7 +4,7 @@
 mingmeiy
 ming -v
 ming -version
-# server功能
+# server功能shixian
 ming server
 ming server list
 ming server add -xx

@@ -1,3 +1,4 @@
+import asyncio
 import os
 import re
 import subprocess
@@ -6,14 +7,32 @@ import click
 import psutil
 
 
+async def asyncGetScreenfetch():
+    # 尝试执行 screenfetch
+    try:
+        res = await subprocess.Popen("screenfetch", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        sout, serr = res.communicate()
+        # res.returncode, sout, serr, res.pid
+        if res.returncode == 0:
+            return sout.decode('utf-8')
+    except OSError:
+        return '安装screenfetch可以获得screenfetch图！'
+
+
 def echo_pc_info():
     """
     输出 设备产品信息
     :return:
     """
+    loop = asyncio.get_event_loop()
+    screenfetch_future = asyncio.ensure_future(asyncGetScreenfetch(), loop=loop)
+
     os_info = os.uname()
     # 获取当前系统虚拟化方式
-    virtual_type_str = str.split(subprocess.getoutput("lscpu | grep -E  '超管理器厂商|Hypervisor vendor'").strip(''))[1]
+    virtual_type_split_arr = str.split(subprocess.getoutput("lscpu | grep -E  '超管理器厂商|Hypervisor vendor'").strip(''))
+    virtual_type_str = '无'
+    if len(virtual_type_split_arr) == 2:
+        virtual_type_str = virtual_type_split_arr[1]
 
     memory_info_str = '''
 操作系统:
@@ -51,14 +70,7 @@ cpu信息:
         subprocess.getoutput('df -h')
     )
     # 尝试执行 screenfetch
-    try:
-        res = subprocess.Popen("screenfetch", shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        sout, serr = res.communicate()
-        # res.returncode, sout, serr, res.pid
-        if res.returncode == 0:
-            memory_info_str += '\nscreenfetch:\n{}'.format(sout.decode('utf-8'))
-    except OSError:
-        pass
+    memory_info_str += '\nscreenfetch:\n{}'.format(str(screenfetch_future.result()))
     click.echo(memory_info_str)
 
 
