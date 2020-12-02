@@ -184,8 +184,12 @@ def open_sftp_password_tty(host, port, username, password, cwd_path):
     cmd = 'sftp -o StrictHostKeyChecking=no -P {} {}@{}'.format(port, username, host)
     p_sftp = pexpect.spawn(command=cmd, cwd=cwd_path)
     # 输入密码
-    p_sftp.expect("password:")
-    p_sftp.sendline(password)
+    # 输入密码
+    try:
+        p_sftp.expect("password:", timeout=3)
+        p_sftp.sendline(password)
+    except pexpect.exceptions.TIMEOUT:
+        click.echo(click.style("等待输入密码消息超时!", fg='yellow'))
     # 设置终端大小
     terminal_size = os.get_terminal_size()
     p_sftp.setwinsize(terminal_size.lines, terminal_size.columns)
