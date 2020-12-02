@@ -8,6 +8,7 @@ from typing import List
 # 截断数组 保留 0-index+1
 '''
 
+
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
         index = 0
@@ -15,5 +16,4 @@ class Solution:
             if nums[i] != nums[index]:
                 index += 1
                 nums[index] = nums[i]
-        return index+1
-
+        return index + 1

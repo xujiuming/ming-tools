@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
+import os
 
 import click
 
 from src.config import global_config, config_manager
-from src.config.global_config import compile_ip, compile_host_mame
+from src.config.global_config import compile_ip, compile_host_mame, tools_dependency_info_arr
 from src.local import http_server, pc_info, net_manager, pc_test
 from src.script import script_manager
 from src.server import server_config
@@ -39,14 +40,54 @@ def print_version(ctx, param, value):
     启用自动补全:
     bash:在.bashrc末尾添加 eval "$(_M_COMPLETE=source m)"
     zsh:在.zshrc末尾添加 eval "$(_M_COMPLETE=source_zsh m)"
-    依赖的工具：ssh、sftp、vi、dd、git、free、ip、cat、graphviz
-    jiuming-tools Version {}""".format(global_config.version)
+    依赖的工具：{}
+    jiuming-tools Version {}""".format([i.cmd for i in tools_dependency_info_arr], global_config.version)
     click.echo(version_info)
+    ctx.exit()
+
+
+def check_tools_dependency(ctx, param, value):
+    """
+    输出工具版本
+    由于本工具依赖众多 linux下工具
+    不过不是必须  所以可以通过此方法 校验是否满足依赖  和影响的相关功能
+    :param ctx:   click上下文
+    :param param: 参数
+    :param value:  值
+    :return:
+    """
+    if not value or ctx.resilient_parsing:
+        return
+    # 读取 $PATH
+    bin_path_str_arr = os.getenv("PATH").split(":")
+    # 命令set集合
+    cmd_name_set = set()
+    for bin_path in bin_path_str_arr:
+        for f in os.listdir(bin_path):
+            cmd_name_set.add(f)
+    # 获取系统依赖工具列表
+    no_install_tools_name = []
+    echo_str = "检查依赖。。。。\n"
+    for i in tools_dependency_info_arr:
+        echo_str += "开始检测:{}\n备注:{}\n".format(i.cmd, i.desc)
+        if i.cmd in cmd_name_set:
+            echo_str += "{}已经安装!\n".format(i.cmd)
+        else:
+            echo_str += "{}未安装!安装示例:{}\n".format(i.cmd, i.installDemoCmd)
+            no_install_tools_name.append(i.cmd)
+        echo_str += "--------------------------------------\n"
+    echo_str += "依赖检查完毕!\n"
+    if len(no_install_tools_name) > 0:
+        echo_str += "{}未安装!部分功能无法正常运行!".format(no_install_tools_name)
+    click.echo(echo_str)
     ctx.exit()
 
 
 @click.group()
 @click.option('--version', '-v', help='工具版本', is_flag=True, callback=print_version, expose_value=False, is_eager=True)
+@click.option('--check', '-c', help='检测当前环境下工具依赖是否完整', is_flag=True, callback=check_tools_dependency,
+              expose_value=False,
+              is_eager=True)
 def cli():
     pass
 

@@ -10,7 +10,7 @@ if __name__ == '__main__':
     nums1 = [1, 2, 2, 1]
     nums2 = [2, 2]
     result = []
-    #hash 表
+    # hash 表
     # 构建hash表 nums i
     hashNums1 = {}
     for i in range(len(nums1)):

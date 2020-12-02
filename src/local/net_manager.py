@@ -1,11 +1,11 @@
+import datetime
 import socket
 
 import click
+from scapy.all import traceroute
+from scapy.as_resolvers import AS_resolver_radb
 
 from src.config.global_config import compile_ip, compile_host_mame
-from scapy.as_resolvers import AS_resolver_radb
-from scapy.all import traceroute
-import datetime
 
 
 def net_test(host, port):

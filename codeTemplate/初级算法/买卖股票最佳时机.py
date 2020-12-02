@@ -3,6 +3,8 @@ from typing import List
 '''
 只有连续低收高买才是最高收益 
 '''
+
+
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
         result = 0
