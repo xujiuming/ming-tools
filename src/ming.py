@@ -77,9 +77,9 @@ def check_tools_dependency(ctx, param, value):
             no_install_tools_name.append(i.cmd)
         echo_str += "--------------------------------------\n"
     echo_str += "依赖检查完毕!\n"
-    if len(no_install_tools_name) > 0:
-        echo_str += "{}未安装!部分功能无法正常运行!".format(no_install_tools_name)
     click.echo(echo_str)
+    if len(no_install_tools_name) > 0:
+        click.echo(click.style("{}未安装!部分功能无法正常运行!\n".format(no_install_tools_name), fg='red'))
     ctx.exit()
 
 
