@@ -21,7 +21,8 @@ jobs:
           architecture: 'x64'
       - name: build
         run: |
-          pip -V
+          python -m pip install --upgrade pip
+          pip -v
           python -V
           pip install -p
           python setup.py sdist bdist_wheel
