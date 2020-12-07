@@ -28,7 +28,7 @@ jobs:
       - name: pushToPypi
         env:
           #twine 账户密码
-          TWINE_USERNAME: ${{ screts.PYPI_USERNAME }}
-          TWINE_PASSWORD: ${{ screts.PYPI_PASSWORD }}
+          TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
           twine upload dist/*
