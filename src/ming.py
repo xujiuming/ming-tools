@@ -63,8 +63,14 @@ def check_tools_dependency(ctx, param, value):
     # 命令set集合
     cmd_name_set = set()
     for bin_path in bin_path_str_arr:
-        for f in os.listdir(bin_path):
-            cmd_name_set.add(f)
+        if not os.path.exists(bin_path):
+            click.echo(click.style("{}不存在!\n".format(bin_path), fg='yellow'))
+            continue
+        if os.path.isfile(bin_path):
+            cmd_name_set.add(bin_path)
+        else:
+            for f in os.listdir(bin_path):
+                cmd_name_set.add(f)
     # 获取系统依赖工具列表
     no_install_tools_name = []
     echo_str = "检查依赖。。。。\n"
