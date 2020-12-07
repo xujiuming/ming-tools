@@ -27,7 +27,7 @@ jobs:
           python -V
           pip install pipenv
           pipenv install
-          python setup.py sdist bdist_wheel
+          pipenv run python setup.py sdist bdist_wheel
       - name: pushToPypi
         env:
           #twine 账户密码
