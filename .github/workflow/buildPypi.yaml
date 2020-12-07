@@ -1,0 +1,10 @@
+# author ming
+# 构建 jiuming-tools 推送到pypi上
+# 基于 github actions 监听 tag  根据tag 构建发布 到pypi
+# 触发规则: master branch tag tag规则vX.Y.z
+# jiuming-tools 自动化发布版本规则 vX.Y.z-yyyyMMddHHmmss  手工发布规则除外
+# 环境变量    PYPI_USERNAME PYPI_PASSWORD
+on:
+  push:
+    tags:
+      - 'v*'
