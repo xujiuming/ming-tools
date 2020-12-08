@@ -43,6 +43,7 @@ jobs:
           pip install pipenv twine
       - name: installPipenvLib
         run: |
+          pip install pipenv
           pipenv install
       - name: build
         # 构建
