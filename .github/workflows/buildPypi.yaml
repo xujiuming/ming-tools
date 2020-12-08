@@ -40,7 +40,7 @@ jobs:
           python -m pip install --upgrade pip
           pip -V
           python -V
-          pip install pipenv twine  --target=/usr/local/lib/python2.7/site-packages
+          pip install pipenv twine
       - name: installPipenvLib
         run: |
           pipenv install
