@@ -44,7 +44,7 @@ jobs:
       - name: installPipenvLib
         run: |
           pip install pipenv
-          pipenv install
+          bash pipenv install
       - name: build
         # 构建
         run: |
