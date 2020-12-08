@@ -24,6 +24,7 @@ jobs:
 #          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Pipfile.lock','**/Pipfile') }}
       #缓存pipenv依赖
       - name: cachePipenv
+        id: cachePipenvId
         uses: actions/cache@v2
         env:
           cache-name: cache-pipenv-lib
@@ -43,9 +44,8 @@ jobs:
           pip install pipenv twine
       - name: installPipenvLib
         # 当未命中缓存执行安装操作
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          pipenv install
+        if: steps.cachePipenvId.outputs.cache-hit != 'true'
+        run: pipenv install
       - name: build
         # 构建
         run: |
