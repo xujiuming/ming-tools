@@ -1,14 +1,11 @@
 # author ming
 # 构建 jiuming-tools 推送到pypi上
 # 基于 github actions 监听 tag  根据tag 构建发布 到pypi
-# 触发规则: master branch tag tag规则vX.Y.z
-# jiuming-tools 自动化发布版本规则 vX.Y.z-yyyyMMddHHmmss  手工发布规则除外
 # 环境变量    PYPI_USERNAME PYPI_PASSWORD
 # 参考文档: https://github.com/actions/starter-workflows/blob/main/ci/python-publish.yml
 on:
   push:
-#    branch: '*'
-    tags:
+    branches:
       - '*'
 jobs:
   build:
@@ -20,18 +17,26 @@ jobs:
         with:
           python-version: '3.x'
           architecture: 'x64'
-      - name: build
+      - name: install
         run: |
           python -m pip install --upgrade pip
           pip -V
           python -V
           pip install pipenv twine
           pipenv install
+      - name: updateVersion
+        #global_config.py中 version的值+1
+        run: |
+
+      - name: build
+        # 构建
+        run: |
           pipenv run python setup.py sdist bdist_wheel
       - name: pushToPypi
         env:
           #twine 账户密码
           TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        #推送
         run: |
           twine upload dist/*

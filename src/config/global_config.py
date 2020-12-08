@@ -2,7 +2,11 @@ import os
 import re
 
 # 版本号  setup.py  ming.py 引用  每次发布 版本+1
-version = '1.73'
+import yaml
+
+
+def getVersion():
+    return yaml.safe_load(open('ming.yaml', 'r')).get('version')
 
 
 class ToolsDependency:

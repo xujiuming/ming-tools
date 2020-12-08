@@ -1,18 +1,18 @@
 # -*- coding:utf-8 -*-
-import os
-
 from setuptools import setup, find_packages
 
-from src.config.global_config import version
-
-
+from src.config.global_config import getVersion
 
 setup(
     name='jiuming-tools',
     # 版本 如果需要发布更新 需要调整版本号
-    version=version,
+    version=getVersion(),
     packages=find_packages(),
     include_package_data=True,
+    data_files=[
+        # 打包打进ming.yaml
+        ('', ['ming.yaml'])
+    ],
     platforms='linux',
     # 需要的依赖
     install_requires=[
