@@ -6,20 +6,11 @@ from setuptools import setup, find_packages
 from src.config.global_config import version
 
 
-def buildVersion():
-    """
-    构建版本
-    生成对应tag
-
-    """
-    os.system('git tag {}'.format(version))
-    return version
-
 
 setup(
     name='jiuming-tools',
     # 版本 如果需要发布更新 需要调整版本号
-    version=buildVersion(),
+    version=version,
     packages=find_packages(),
     include_package_data=True,
     platforms='linux',

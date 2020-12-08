@@ -34,6 +34,7 @@ def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
 
+    tools_lib_str ='\n'.join( [i.cmd+'\n' for i in tools_dependency_info_arr])
     version_info = """
     作者:ming 
     仅适用linux 其他平台兼容性不做保证
@@ -41,7 +42,7 @@ def print_version(ctx, param, value):
     bash:在.bashrc末尾添加 eval "$(_M_COMPLETE=source m)"
     zsh:在.zshrc末尾添加 eval "$(_M_COMPLETE=source_zsh m)"
     依赖的工具：{}
-    jiuming-tools Version {}""".format([i.cmd for i in tools_dependency_info_arr], global_config.version)
+    jiuming-tools Version {}""".format(tools_lib_str, global_config.version)
     click.echo(version_info)
     ctx.exit()
 
