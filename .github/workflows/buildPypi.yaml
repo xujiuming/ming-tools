@@ -3,6 +3,7 @@
 # 基于 github actions 监听 tag  根据tag 构建发布 到pypi
 # 环境变量    PYPI_USERNAME PYPI_PASSWORD
 # 参考文档: https://github.com/actions/starter-workflows/blob/main/ci/python-publish.yml
+name: 发布版本到pypi
 on:
   push:
     branches:
@@ -13,21 +14,36 @@ jobs:
     steps:
       # 检出代码
       - uses: actions/checkout@v1
+      # 缓存pip安装依赖
+      - name: cachePipInstall
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pip-lib
+        with:
+          path: /opt/hostedtoolcache/Python/3.9.0/x64/lib/python3.9/site-packages
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Pipfile.lock','**/Pipfile') }}
+      #缓存pipenv依赖
+      - name: cachePipenv
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pipenv-lib
+        with:
+          path:  /home/runner/.local/share/virtualenvs/jiuming-tools-*
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Pipfile.lock','**/Pipfile') }}
+
       - uses: actions/setup-python@v2
         with:
           python-version: '3.x'
           architecture: 'x64'
-      - name: install
+      - name: installPipLib
         run: |
           python -m pip install --upgrade pip
           pip -V
           python -V
           pip install pipenv twine
-          pipenv install
-      - name: updateVersion
-        #global_config.py中 version的值+1
+      - name: installPipenvLib
         run: |
-
+          pipenv install
       - name: build
         # 构建
         run: |
