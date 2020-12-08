@@ -43,11 +43,11 @@ jobs:
           pip install pipenv twine
       - name: installPipenvLib
         run: |
-          pipenv install
+          python  /opt/hostedtoolcache/Python/3.9.0/x64/lib/python3.9/site-packages/pipenv/__main__.py install
       - name: build
         # 构建
         run: |
-          pipenv run python setup.py sdist bdist_wheel
+          python  /opt/hostedtoolcache/Python/3.9.0/x64/lib/python3.9/site-packages/pipenv/__main__.py run python setup.py sdist bdist_wheel
       - name: pushToPypi
         env:
           #twine 账户密码
