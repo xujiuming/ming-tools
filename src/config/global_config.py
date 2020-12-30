@@ -2,10 +2,11 @@ import os
 import re
 
 # 版本号  setup.py  ming.py 引用  每次发布 版本+1
+ming_global_version = 1.79
 
 
 def getVersion():
-    return '1.77'
+    return ming_global_version
 
 
 class ToolsDependency:
