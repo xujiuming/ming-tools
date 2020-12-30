@@ -31,7 +31,6 @@ setup(
         m=src.ming:cli
     ''',
     author='ming',
-    author_email='*****',
     license='MIT',
     url='https://github.com/xujiuming/jiuming-tools',
     description='个人常用功能'
