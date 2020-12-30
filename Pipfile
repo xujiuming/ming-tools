@@ -14,7 +14,9 @@ speedtest-cli = "*"
 pexpect = "~=4.8.0"
 scapy = "*"
 keyring = "*"
-jiuming-tools = {editable = true, path = "."}
+twine = "*"
+setuptools = "*"
+wheel = "*"
 
 [dev-packages]
 #[requires]

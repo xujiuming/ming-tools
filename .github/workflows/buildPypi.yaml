@@ -41,7 +41,7 @@ jobs:
           python -m pip install --upgrade pip
           pip -V
           python -V
-          pip install pipenv twine
+          pip install pipenv
       - name: installPipenvLib
         # 当未命中缓存执行安装操作
         if: steps.cachePipenvId.outputs.cache-hit != 'true'
@@ -57,4 +57,4 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         #推送
         run: |
-          twine upload dist/*
+         pipenv run   twine upload dist/*
