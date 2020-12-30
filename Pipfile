@@ -17,6 +17,7 @@ keyring = "*"
 twine = "*"
 setuptools = "*"
 wheel = "*"
+jiuming-tools = {editable = true, path = "."}
 
 [dev-packages]
 #[requires]

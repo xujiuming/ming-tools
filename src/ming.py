@@ -34,7 +34,7 @@ def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
 
-    tools_lib_str =','.join( [i.cmd for i in tools_dependency_info_arr])
+    tools_lib_str = ','.join([i.cmd for i in tools_dependency_info_arr])
     version_info = """
     作者:ming 
     仅适用linux 其他平台兼容性不做保证
@@ -116,8 +116,10 @@ def server_list():
 @click.option('--port', '-p', prompt='请输入服务器ssh端口,默认为22', default=22)
 @click.option('--username', '-u', prompt='请输入服务器用户名')
 @click.option('--password', '-pwd', prompt='请输入密码')
-@click.option('--path', '-path', prompt='密钥位置')
+@click.option('--path', '-path', default='', prompt='密钥位置(默认不填写)')
 def server_add(name, host, port, username, password, path):
+    if path == '':
+        path = None
     server_config.server_add(str(name).strip(), host, port, username, password, path)
 
 
