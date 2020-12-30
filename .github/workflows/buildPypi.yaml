@@ -42,6 +42,7 @@ jobs:
           pip -V
           python -V
           pip install pipenv
+          pip show pipenv
       - name: installPipenvLib
         # 当未命中缓存执行安装操作
         if: steps.cachePipenvId.outputs.cache-hit != 'true'
