@@ -9,10 +9,10 @@ setup(
     version=getVersion(),
     packages=find_packages(),
     include_package_data=True,
-    data_files=[
-        # 打包打进ming.yaml
-        ('', ['ming.yaml'])
-    ],
+    # data_files=[
+    #     # 打包打进ming.yaml
+    #     ('', ['ming.yaml'])
+    # ],
     platforms='linux',
     # 需要的依赖
     install_requires=[

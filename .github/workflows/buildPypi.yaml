@@ -57,5 +57,5 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         #推送
         run: |
-          echo 'upload'
-#          twine upload dist/*
+#          echo 'upload'
+          twine upload dist/*

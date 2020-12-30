@@ -36,7 +36,8 @@ def save(url, username, password):
     y_file = open(sync_config_default_file, 'w')
     sc = SyncConfig(url=url, username=username, password=password)
     yaml.safe_dump([sc.__dict__], y_file)
-    git.Repo(path=config_default_file).create_remote("origin", url)
+    # clone配置
+    clone()
     click.echo('\n录入的同步仓库信息:\n地址:{},用户名:{},密码:{}'.format(url, username, password))
 
 

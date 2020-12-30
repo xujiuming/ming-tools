@@ -5,7 +5,7 @@ import re
 
 
 def getVersion():
-    return '1.76'
+    return '1.77'
 
 
 class ToolsDependency:
