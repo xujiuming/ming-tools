@@ -30,3 +30,14 @@ m
 #zsh:在.zshrc末尾添加 eval "$(_M_COMPLETE=source_zsh m)"
 ```
 
+3.9.1 python  报错  无法读取 liblibc.a   这个应该是读取 Libc.a文件    将libc.a 复制一份 命名liblibc.a
+```shell
+sudo find / -name libc.a 
+```
+/usr/lib32/libc.a
+/usr/lib/libc.a
+
+scrpy  3.9.1bug处理  将原本的libc.a 复制一份命名未Liblibc.a  
+/usr/lib32/liblibc.a
+/usr/lib/liblibc.a
+
