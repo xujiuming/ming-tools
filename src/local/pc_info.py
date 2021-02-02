@@ -60,7 +60,7 @@ cpu信息:
 磁盘信息:
 {}
         '''.format(
-        os.getlogin(),
+        os.getenv("USER"),
         os_info.nodename,
         subprocess.getoutput('cat /etc/issue').strip('\n'),
         os_info.release,
