@@ -12,7 +12,8 @@ import socket
 from scapy.all import traceroute
 from scapy.as_resolvers import AS_resolver_radb
 
-from src.config.global_config import config_default_file, private_key_default_file,compile_ip, compile_host_mame
+from src.config.global_config import config_default_file, private_key_default_file, compile_ip, compile_host_mame
+
 # 默认配置file
 server_config_default_file = config_default_file + '/server_config.yaml'
 
@@ -211,36 +212,37 @@ def open_sftp_secret_key_tty(host, port, username, secret_key_path, cwd_path):
     p_sftp.interact()
 
 
-
 def test_ssh_server():
     """
      检查 列表中的 server是否存活
     """
     config_list = yaml.safe_load(open(server_config_default_file, 'r'))
     if config_list is None:
-        click.echo("暂无{}服务器配置信息!".format(name))
+        click.echo("暂无服务器配置信息!")
         return
     for c in config_list:
         sc = ServerConfig.to_obj(c)
         if sc is not None:
-            #执行探测操作
-            result = "{}探测结果:{}\r\n".format( sc.host+":"+sc.port,open_socket_ssh_server(sc.host,sc.port))    
+            # 执行探测操作
+            result = "{}探测结果:{}\r\n".format(sc.host + ":" + str(sc.port), open_socket_ssh_server(sc.host, sc.port))
             click.echo(result)
 
-def open_socket_ssh_server(host,port):
-   try:
-       remote_ip = host
-       if compile_host_mame.match(host):
-           remote_ip = socket.gethostbyname(host)
-       elif compile_ip.match(host):
-          remote_ip = socket.gethostbyaddr(host)
-       sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-       sock.connect((remote_ip, port))
-       sock.close()
-       return True 
-   except socket.error as e: 
+
+def open_socket_ssh_server(host, port):
+    try:
+        remote_ip = host
+        if compile_host_mame.match(host):
+            remote_ip = socket.gethostbyname(host)
+        elif compile_ip.match(host):
+            remote_ip = socket.gethostbyaddr(host)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((remote_ip, port))
+        sock.close()
+        return True
+    except socket.error as e:
         click.echo("{}的{}端口连接失败,原因:{}".format(host, port, e))
         return False
+
 
 class ServerConfig(object):
     """
