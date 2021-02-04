@@ -147,6 +147,9 @@ def server_sftp(name, cwd):
     server_config.server_sftp(name, cwd)
 
 
+@server.command('test',help='检测服务器是否可链接')
+def server_test():
+    server_config.test_ssh_server()
 # ----------------------------------- local tools ----------------------------------------------------------------------
 
 @cli.group(help='本机使用的工具')
