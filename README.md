@@ -17,6 +17,9 @@ m config
 ```
 
 #### 安装更新工具  
+
+>https://pypi.org/project/jiuming-tools/
+
 ```shell script
 # ubuntu 使用python3 版本的pip 名字默认为pip3 
 #安装
