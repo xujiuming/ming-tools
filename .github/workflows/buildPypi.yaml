@@ -15,22 +15,22 @@ jobs:
       # 检出代码
       - uses: actions/checkout@v1
       # 缓存pip安装依赖
-      - name: cachePipInstall
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-pip-lib
-        with:
-          path: /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-20201230114600
-      #缓存pipenv依赖
-#      - name: cachePipenv
-#        id: cachePipenvId
+#      - name: cachePipInstall
 #        uses: actions/cache@v2
 #        env:
-#          cache-name: cache-pipenv-lib
+#          cache-name: cache-pip-lib
 #        with:
-#          path:  /home/runner/.local/share/virtualenvs/jiuming-tools-*
-#          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Pipfile.lock','**/Pipfile') }}
+#          path: /opt/hostedtoolcache/Python/3.9.1/x64/lib/python3.9/site-packages
+#          key: ${{ runner.os }}-build-${{ env.cache-name }}-20201230114600
+      #缓存pipenv依赖
+      - name: cachePipenv
+        id: cachePipenvId
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pipenv-lib
+        with:
+          path:  /home/runner/.local/share/virtualenvs/jiuming-tools-*
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/Pipfile.lock','**/Pipfile') }}
 
       - uses: actions/setup-python@v2
         with:
@@ -45,7 +45,7 @@ jobs:
           pip show pipenv
       - name: installPipenvLib
         # 当未命中缓存执行安装操作
-#        if: steps.cachePipenvId.outputs.cache-hit != 'true'
+        if: steps.cachePipenvId.outputs.cache-hit != 'true'
         run: pipenv install
       - name: build
         # 构建
