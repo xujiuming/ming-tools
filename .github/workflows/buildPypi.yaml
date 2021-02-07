@@ -6,7 +6,7 @@
 name: 发布版本到pypi
 on:
   push:
-    branches:
+    tags:
       - '*'
 jobs:
   build:
