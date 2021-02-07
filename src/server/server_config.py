@@ -228,7 +228,7 @@ def test_ssh_server():
             start_time = time.perf_counter_ns()
             r = open_socket_ssh_server(sc.host, sc.port)
             end_time = time.perf_counter_ns()
-            result = "{}探测结果:{},耗时:{}ms".format(sc.host + ":" + str(sc.port), r,
+            result = "{},探测结果:{},耗时:{}ms".format(sc.host + ":" + str(sc.port), r,
                                                     str(round((int(round((end_time - start_time) / 1000000))), 2)))
             click.echo(result)
 
