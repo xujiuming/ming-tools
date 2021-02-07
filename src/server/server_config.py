@@ -213,7 +213,7 @@ def open_sftp_secret_key_tty(host, port, username, secret_key_path, cwd_path):
     p_sftp.interact()
 
 
-def test_ssh_server():
+def ping_ssh_server(name_arr):
     """
      检查 列表中的 server是否存活
     """
@@ -223,14 +223,27 @@ def test_ssh_server():
         return
     for c in config_list:
         sc = ServerConfig.to_obj(c)
-        if sc is not None:
-            # 执行探测操作
-            start_time = time.perf_counter_ns()
-            r = open_socket_ssh_server(sc.host, sc.port)
-            end_time = time.perf_counter_ns()
-            result = "{},探测结果:{},耗时:{}ms".format(sc.host + ":" + str(sc.port), r,
-                                                    str(round((int(round((end_time - start_time) / 1000000))), 2)))
-            click.echo(result)
+        if name_arr is None:
+            if sc is not None:
+                # 执行探测操作
+                start_time = time.perf_counter_ns()
+                r = open_socket_ssh_server(sc.host, sc.port)
+                end_time = time.perf_counter_ns()
+                result = "{},探测结果:{},耗时:{}ms".format(sc.host + ":" + str(sc.port), r,
+                                                        str(round((int(round((end_time - start_time) / 1000000))), 2)))
+                click.echo(result)
+        else:
+            sc = ServerConfig.to_obj(c)
+            if sc is not None:
+                #如用户传入 name_arr 只测试传入的列表
+                if list(name_arr).__contains__(sc.name):
+                    # 执行探测操作
+                    start_time = time.perf_counter_ns()
+                    r = open_socket_ssh_server(sc.host, sc.port)
+                    end_time = time.perf_counter_ns()
+                    result = "{},探测结果:{},耗时:{}ms".format(sc.host + ":" + str(sc.port), r,
+                                                         str(round((int(round((end_time - start_time) / 1000000))), 2)))
+                    click.echo(result)
 
 
 def open_socket_ssh_server(host, port):

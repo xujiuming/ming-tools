@@ -33,14 +33,24 @@ m
 #zsh:在.zshrc末尾添加 eval "$(_M_COMPLETE=source_zsh m)"
 ```
 
-3.9.1 python  报错  无法读取 liblibc.a   这个应该是读取 Libc.a文件    将libc.a 复制一份 命名liblibc.a
+#####  异常处理 
+* 3.9.1 python  报错  无法读取 liblibc.a   这个应该是读取 Libc.a文件    将libc.a 复制一份 命名liblibc.a    
+scrpy  3.9.1bug处理  将原本的libc.a 复制一份命名未Liblibc.a    
+/usr/lib32/liblibc.a  
+/usr/lib/liblibc.a   
+  
 ```shell
 sudo find / -name libc.a 
+
+#新增兼容 
+sudo cp /usr/lib32/libc.a /usr/lib32/liblibc.a
+sudo cp /usr/lib/libc.a /usr/lib/liblibc.a
 ```
-/usr/lib32/libc.a
-/usr/lib/libc.a
 
-scrpy  3.9.1bug处理  将原本的libc.a 复制一份命名未Liblibc.a  
-/usr/lib32/liblibc.a
-/usr/lib/liblibc.a
+#### 后续计划 
+本项目 就是参考 mmh的相关功能简化和添加一些自己常用的功能开发的   
+> https://github.com/mritd/mmh    
 
+* 调整 m server test功能  更名为 m server ping 功能 并且 提供数组参数    默认全部ping        
+* 添加server 打洞相关功能  类似 mtun(mmh的端口映射)   
+* 增加release whl包功能  提供在github release中提供whl包下载
