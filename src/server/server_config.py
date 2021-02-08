@@ -3,12 +3,13 @@ import copy
 import os
 import pathlib
 import shutil
+import socket
 import time
 
 import click
 import pexpect
+import psutil
 import yaml
-import socket
 
 from src.config.global_config import config_default_file, private_key_default_file, compile_ip, compile_host_mame, \
     compile_tun_value
@@ -312,11 +313,41 @@ def server_tun(left, right, reverse, name):
                                                      str(sc.port),
                                                      '{}@{}'.format(sc.username, sc.host))
         click.echo(cmd_str)
+        auto_open_tun(cmd_str, sc.password)
     else:
         cmd_str = 'ssh -CqTnN -L {} -p {} {}'.format('{}:{}'.format(left, get_server_config_tun_info(sc, right)),
                                                      str(sc.port),
                                                      '{}@{}'.format(sc.username, sc.host))
         click.echo(cmd_str)
+        auto_open_tun(cmd_str, sc.password)
+
+
+def auto_open_tun(cmd_str, password):
+    """
+    自动打开 tun通道   当断开之后重连
+    """
+    p_tun = pexpect.spawn(command=cmd_str, cwd=".")
+    # 输入密码
+    try:
+        p_tun.expect("password:", timeout=3)
+        p_tun.sendline(password)
+    except pexpect.exceptions.TIMEOUT:
+        click.echo(click.style("等待输入密码消息超时!", fg='yellow'))
+    pid = p_tun.pid
+    click.echo( pid)
+    while True:
+        if not psutil.pid_exists(pid):
+            p_tun = pexpect.spawn(command=cmd_str, cwd=".")
+            # 输入密码
+            try:
+                p_tun.expect("password:", timeout=3)
+                p_tun.sendline(password)
+            except pexpect.exceptions.TIMEOUT:
+                click.echo(click.style("等待输入密码消息超时!", fg='yellow'))
+            pid = p_tun.pid
+            click.echo("重连tun通道,PID:{}", pid)
+        # 休眠200ms
+        time.sleep(0.2)
 
 
 def get_server_config_tun_info(sc: ServerConfig, tun_str):
@@ -326,10 +357,4 @@ def get_server_config_tun_info(sc: ServerConfig, tun_str):
         return '{}:{}'.format(sc.host, sc.port)
 
 
-def open_tun(server_str: ServerConfig, tun_str: str, reverse: bool):
-    """
-    打开ssh tun 通道
-    server_str 服务登录属性
-    tun_str 代理规则
-    reverse 是否反转
-    """
+
