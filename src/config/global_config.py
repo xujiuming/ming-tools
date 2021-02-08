@@ -2,7 +2,7 @@ import os
 import re
 
 # 版本号  setup.py  ming.py 引用  每次发布 版本+1
-ming_global_version = 1.92
+ming_global_version = 1.93
 
 
 def getVersion():
@@ -61,3 +61,4 @@ if not os.path.exists(private_key_default_file):
 # 正则
 compile_ip = re.compile('^((25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(25[0-5]|2[0-4]\d|[01]?\d\d?)$')
 compile_host_mame = re.compile('^[a-zA-Z0-9][-a-zA-Z0-9]{0,62}(\.[a-zA-Z0-9][-a-zA-Z0-9]{0,62})+\.?$')
+compile_tun_value = re.compile('^[a-zA-Z0-9]{0,62}:[a-zA-Z0-9]{0,62}$')

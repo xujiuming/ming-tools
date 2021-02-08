@@ -153,6 +153,15 @@ def server_ping(name):
     server_config.ping_ssh_server(name)
 
 
+@server.command('tun', help='ssh tun 打洞，默认将左边地址映射到右边地址')
+@click.option('--left', '-l', type=str, prompt='请输入左边端口映射(host:port)', help='左边')
+@click.option('--right', '-r', type=str, prompt='请输入右边边端口映射(host:port)', help='右边')
+@click.option('--name', '-n', type=str, prompt='请输入服务器名称', help='服务器名称')
+@click.option('--reverse', is_flag=True, help='反转，将右边地址映射到左边')
+def server_tun(left, right, name, reverse):
+    server_config.server_tun(left, right, reverse, name)
+
+
 # ----------------------------------- local tools ----------------------------------------------------------------------
 
 @cli.group(help='本机使用的工具')

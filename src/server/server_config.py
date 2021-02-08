@@ -8,15 +8,49 @@ import time
 import click
 import pexpect
 import yaml
-import datetime
 import socket
-from scapy.all import traceroute
-from scapy.as_resolvers import AS_resolver_radb
 
-from src.config.global_config import config_default_file, private_key_default_file, compile_ip, compile_host_mame
+from src.config.global_config import config_default_file, private_key_default_file, compile_ip, compile_host_mame, \
+    compile_tun_value
 
 # 默认配置file
 server_config_default_file = config_default_file + '/server_config.yaml'
+
+
+class ServerConfig(object):
+    """
+    服务器配置模板class
+    """
+    # 名字
+    name: str
+    # 地址
+    host: str
+    # ssh端口
+    port: int
+    # 服务器用户名
+    username: str
+    # 密码
+    password: str
+    # 密钥位置
+    secretKeyPath: str
+
+    def __init__(self, name, host, port, username, password, secretKeyPath):
+        self.name = name
+        self.host = host
+        self.port = port
+        self.username = username
+        self.password = password
+        self.secretKeyPath = secretKeyPath
+
+    @staticmethod
+    def to_obj(d: dict):
+        """
+        将读取的dict 转换为 serverConfig
+        :param d:  dict
+        :return: ServerConfig
+        """
+        return ServerConfig(name=d['name'], host=d['host'], port=d['port'], username=d['username'],
+                            password=d['password'], secretKeyPath=d.get('secretKeyPath', None))
 
 
 def server_add(name, host, port, username, password, path):
@@ -230,12 +264,12 @@ def ping_ssh_server(name_arr):
                 r = open_socket_ssh_server(sc.host, sc.port)
                 end_time = time.perf_counter_ns()
                 result = "{},探测结果:{},耗时:{}ms".format(sc.host + ":" + str(sc.port), r,
-                                                        str(round((int(round((end_time - start_time) / 1000000))), 2)))
+                                                     str(round((int(round((end_time - start_time) / 1000000))), 2)))
                 click.echo(result)
         else:
             sc = ServerConfig.to_obj(c)
             if sc is not None:
-                #如用户传入 name_arr 只测试传入的列表
+                # 如用户传入 name_arr 只测试传入的列表
                 if list(name_arr).__contains__(sc.name):
                     # 执行探测操作
                     start_time = time.perf_counter_ns()
@@ -262,37 +296,40 @@ def open_socket_ssh_server(host, port):
         return False
 
 
-class ServerConfig(object):
-    """
-    服务器配置模板class
-    """
-    # 名字
-    name: str
-    # 地址
-    host: str
-    # ssh端口
-    port: int
-    # 服务器用户名
-    username: str
-    # 密码
-    password: str
-    # 密钥位置
-    secretKeyPath: str
+def server_tun(left, right, reverse, name):
+    config_list = yaml.safe_load(open(server_config_default_file, 'r'))
+    if config_list is None:
+        click.echo("暂无服务器配置信息!")
+        return
+    sc = None
+    for c in config_list:
+        sc = ServerConfig.to_obj(c)
+        if sc.name == name:
+            break
 
-    def __init__(self, name, host, port, username, password, secretKeyPath):
-        self.name = name
-        self.host = host
-        self.port = port
-        self.username = username
-        self.password = password
-        self.secretKeyPath = secretKeyPath
+    if reverse:
+        cmd_str = 'ssh -CqTnN -R {} -p {} {}'.format('{}:{}'.format(get_server_config_tun_info(sc, right), left),
+                                                     str(sc.port),
+                                                     '{}@{}'.format(sc.username, sc.host))
+        click.echo(cmd_str)
+    else:
+        cmd_str = 'ssh -CqTnN -L {} -p {} {}'.format('{}:{}'.format(left, get_server_config_tun_info(sc, right)),
+                                                     str(sc.port),
+                                                     '{}@{}'.format(sc.username, sc.host))
+        click.echo(cmd_str)
 
-    @staticmethod
-    def to_obj(d: dict):
-        """
-        将读取的dict 转换为 serverConfig
-        :param d:  dict
-        :return: ServerConfig
-        """
-        return ServerConfig(name=d['name'], host=d['host'], port=d['port'], username=d['username'],
-                            password=d['password'], secretKeyPath=d.get('secretKeyPath', None))
+
+def get_server_config_tun_info(sc: ServerConfig, tun_str):
+    if compile_tun_value.match(tun_str):
+        return tun_str
+    else:
+        return '{}:{}'.format(sc.host, sc.port)
+
+
+def open_tun(server_str: ServerConfig, tun_str: str, reverse: bool):
+    """
+    打开ssh tun 通道
+    server_str 服务登录属性
+    tun_str 代理规则
+    reverse 是否反转
+    """

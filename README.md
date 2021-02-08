@@ -52,5 +52,7 @@ sudo cp /usr/lib/libc.a /usr/lib/liblibc.a
 > https://github.com/mritd/mmh    
 
 * 调整 m server test功能  更名为 m server ping 功能 并且 提供数组参数    默认全部ping        
-* 添加server 打洞相关功能  类似 mtun(mmh的端口映射)   
+* 添加server 打洞相关功能  类似 mtun(mmh的端口映射)    ssh tun   ssh -R  ssh -L  ssh -D   ssh -W 
 * 增加release whl包功能  提供在github release中提供whl包下载
+* ssh相关功能增加心跳超时自动断开 等功能  
+* ssh多级跳板功能  
