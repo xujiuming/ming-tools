@@ -65,6 +65,7 @@ def server_add(name, host, port, username, password, path):
     :param path: 文件地址
     :return:
     """
+    name = name.strip()
     secretKeyPath = None
     if path is not None:
         abs_path = path
@@ -102,6 +103,7 @@ def server_remove(name):
     :param name: 服务器名称
     :return:
     """
+    name = name.strip()
     y_read_file = open(server_config_default_file, 'r')
     config_list = yaml.safe_load(y_read_file)
     if config_list is None:
@@ -150,6 +152,7 @@ def server_list():
 
 
 def server_connect(name):
+    name = name.strip()
     click.echo("连接{}服务器...".format(name))
     config_list = yaml.safe_load(open(server_config_default_file, 'r'))
     if config_list is None:
@@ -198,6 +201,7 @@ def open_ssh_password_tty(host, port, username, password):
 
 
 def server_sftp(name, cwd_path):
+    name = name.strip()
     click.echo("连接{}服务器sftp服务...".format(name))
     config_list = yaml.safe_load(open(server_config_default_file, 'r'))
     if config_list is None:
