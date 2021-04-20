@@ -82,6 +82,7 @@ def echo_pc_info():
     screenfetch_result = screenfetch_future.result()
     if screenfetch_future is not None:
         screenfetch_str = '''screenfetch:
+        
         {}
         '''.format(str(screenfetch_result))
         click.echo(screenfetch_str)
